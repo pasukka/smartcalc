@@ -1,9 +1,12 @@
 #ifndef _SRC_PARSER_H_
 #define _SRC_PARSER_H_
 
-#include "lexeme.h"
-
+#include <cmath>
+#include <iostream>
 #include <stack>
+#include <vector>
+
+#include "lexeme.h"
 
 #define PLUS "+"
 #define MINUS "-"
@@ -26,51 +29,127 @@ enum class Error { OK, ERROR, NaN, OOR, OUT_OF_RANGE };
 class Model {
  public:
   using string = std::string;
-  using stack = std::stack<Lexeme>;
+  using deque = std::deque<Lexeme>;
+  using vector = std::vector<Lexeme>;
 
-  Model() : data(""), x(0), answer(""), error(Error::OK) {};
+  Model()
+      : operations(), data(), x(""), str(""), answer(0.0), error(Error::OK){};
 
-  Error calculator(string equasion, string answer, double num_x) {  // , int *filled
-    string str = input(equasion);
+  ~Model(){};
+
+  Error calculator(string equation, string num_x) {
+    str = preprocessing(equation);
     if (str.size() == 0) error = Error::ERROR;
-    if (error != Error::OK) parser(str, num_x);
-    // if (error != Error::OK) make_calculations(str);  // заменять stack (с лексемами)
-    if (error != Error::OK) {
-      // answer = (stack[0]).value_double;
-      // if (!!strcmp((&stack_out->stack[0])->operation, "\0") ||
-      //     (&stack_out->stack[0])->value_char != '\0') {
-      //   *filled = 0;
-      // }
-    }
-    return error;
-  }
+    if (error == Error::OK) parser(num_x);
+    if (error == Error::OK) make_calculations();
 
-  
+    // std::cout << "\n answer: " << answer << "\n";
+    // if (error == Error::OK)
+    //   printf("\n OK\n");
+    // else if (error == Error::ERROR)
+    //   printf("\n ERROR\n");
+    // else if (error == Error::NaN)
+    //   printf("\n NaN\n");
+    // else if (error == Error::OOR)
+    //   printf("\n OOR\n");
+    // else if (error == Error::OUT_OF_RANGE)
+    //   printf("\n OUT_OF_RANGE\n");
+    return error;
+  };
+
+  double get_answer() { return answer; };
 
  private:
-  stack data;
-  double x;
-  stack answer;
+  vector operations;
+  deque data;
+  string x;
+  string str;
+  double answer;
   Error error;
-  // int filled;
 
-  int is_number(char symbol) { return (symbol >= 48 && symbol <= 57); }
+  void make_calculations() {
+    for (size_t i = 0; i < data.size() && error == Error::OK; ++i) {
+      Lexeme lexeme = data[i];
+      if (lexeme.type == Type::FUNCTION && lexeme.value != MOD) {
+        if (data.size() < 2 || i < 1) error = Error::ERROR;
+        if (error == Error::OK) make_calc_func(&lexeme, &i);
+      } else if (lexeme.type == Type::OPERATOR || lexeme.value == MOD) {
+        if (data.size() < 3) error = Error::ERROR;
+        if (error == Error::OK) make_calc_oper(&lexeme, &i);
+      }
+    }
+    if (error == Error::OK) answer = std::stod(data.front().value);
+  };
 
-  int is_open_bracket(char symbol) { return (symbol == 40); }
+  void make_calc_func(Lexeme *lexeme, size_t *index) {
+    double number = 0.0;
+    Lexeme lexeme_1 = data[*index - 1];
+    double number_1 = std::stod(lexeme_1.value);
+    if (lexeme->value == SQRT)
+      number = sqrt(number_1);
+    else if (lexeme->value == SIN)
+      number = sin(number_1);
+    else if (lexeme->value == COS)
+      number = cos(number_1);
+    else if (lexeme->value == TAN)
+      number = tan(number_1);
+    else if (lexeme->value == ASIN)
+      number = asin(number_1);
+    else if (lexeme->value == ACOS)
+      number = acos(number_1);
+    else if (lexeme->value == ATAN)
+      number = atan(number_1);
+    else if (lexeme->value == LN)
+      number = log(number_1);
+    else if (lexeme->value == LOG)
+      number = log10(number_1);
+    data[*index - 1].set_value(std::to_string(number));
+    data.erase(data.begin() + *index);
+    --(*index);
+    if (number != number) error = Error::ERROR;
+  };
 
-  int is_delimiter(char symbol) { return (symbol == 44); }
+  void make_calc_oper(Lexeme *lexeme, size_t *index) {
+    Lexeme lexeme_1 = data[*index - 2];
+    Lexeme lexeme_2 = data[*index - 1];
+    double number = 0.0;
+    double number_1 = std::stod(lexeme_1.value);
+    double number_2 = std::stod(lexeme_2.value);
+    if (lexeme->value == PLUS)
+      number = number_1 + number_2;
+    else if (lexeme->value == MINUS)
+      number = number_1 - number_2;
+    else if (lexeme->value == MUL)
+      number = number_1 * number_2;
+    else if (lexeme->value == DIV && number_2 == 0)
+      error = Error::NaN;
+    else if (lexeme->value == DIV)
+      number = number_1 / number_2;
+    else if (lexeme->value == POW)
+      number = pow(number_1, number_2);
+    else if (lexeme->value == MOD)
+      number = fmod(number_1, number_2);
+    if (error == Error::OK) {
+      data[*index - 2].set_value(std::to_string(number));
+      data.erase(data.begin() + *index);
+      data.erase(data.begin() + *index - 1);
+      (*index) -= 2;
+    }
+  };
 
-  int is_closing_bracket(char symbol) { return (symbol == 41); }
+  int is_number(char symbol) { return (symbol >= 48 && symbol <= 57); };
 
-  int is_function(string lexeme) {
-    int output = 0;
-    if (!strcmp(lexeme, MOD) || !strcmp(lexeme, COS) || !strcmp(lexeme, SIN) ||
-        !strcmp(lexeme, TAN) || !strcmp(lexeme, ACOS) || !strcmp(lexeme, ASIN) ||
-        !strcmp(lexeme, ATAN) || !strcmp(lexeme, SQRT) || !strcmp(lexeme, LN) ||
-        !strcmp(lexeme, LOG))
-      output = 1;
-    return output;
-  }
+  int is_open_bracket(char symbol) { return (symbol == 40); };
+
+  int is_delimiter(char symbol) { return (symbol == 44); };
+
+  int is_closing_bracket(char symbol) { return (symbol == 41); };
+
+  int is_function(string str) {
+    return (str == MOD || str == COS || str == SIN || str == TAN ||
+            str == ACOS || str == ASIN || str == ATAN || str == SQRT ||
+            str == LN || str == LOG);
+  };
 
   int is_operator(char symbol) {
     int output = 0;
@@ -78,132 +157,254 @@ class Model {
         symbol == DIV[0] || symbol == POW[0])
       output = 1;
     return output;
-  }
+  };
 
   int is_letter(char symbol) {
     return ((symbol >= 65 && symbol <= 90) || (symbol >= 97 && symbol <= 122));
-  }
+  };
 
-  void set_sign(double *number, int sign) {
+  void set_sign(string *number, int sign) {
     if (sign) {
-      (number) *= -1;
+      (*number) = MINUS + *number;
       sign = 0;
     }
-  }
+  };
 
-  void dijkstra_algorithm(string str, Lexeme lexeme) {
-    size_t i = str.size() - 1;
+  void set_priority(Lexeme *lexeme) {
+    if (lexeme->value == PLUS || lexeme->value == MINUS) {
+      lexeme->priority = 1;
+    } else if (lexeme->value == MUL || lexeme->value == DIV ||
+               lexeme->value == MOD) {
+      lexeme->priority = 2;
+    } else if (lexeme->value == POW) {
+      lexeme->priority = 3;
+    } else if (lexeme->value == COS || lexeme->value == SIN ||
+               lexeme->value == TAN || lexeme->value == LOG ||
+               lexeme->value == SQRT || lexeme->value == ACOS ||
+               lexeme->value == ASIN || lexeme->value == ATAN ||
+               lexeme->value == LN) {
+      lexeme->priority = 4;
+    }
+  };
+
+  void move_from_stack(size_t *i) {
+    while (operations.size() > 0 && operations[*i].value[0] != '(') {
+      if (*i == 0 && operations[*i].value[0] != '(') {
+        error = Error::ERROR;
+        break;
+      }
+      move_lexeme_to_stack(*i);
+      if (error != Error::OK) break;
+      (*i)--;
+    }
+    if (error == Error::OK) operations.erase(operations.begin() + *i);
+  };
+
+  void move_lexeme_to_stack(size_t index) {
+    data.push_back(operations[index]);
+    if (error == Error::OK) operations.erase(operations.begin() + index);
+  };
+
+  void for_close_bracket(size_t *i) {
+    move_from_stack(i);
+    if (error == Error::OK && operations.size() > 0 &&
+        operations[*i - 1].type == Type::FUNCTION)
+      move_lexeme_to_stack(*i - 1);
+  };
+
+  void dijkstra_algorithm(Lexeme *lexeme) {
+    size_t i = operations.size() - 1;
     switch (lexeme->type) {
       case Type::NUMBER:
-        answer.push(lexeme);
+        data.push_back(*lexeme);
         break;
       case Type::FUNCTION:
-        // set_priority(lexeme);
-        data.push(lexeme);
+        set_priority(lexeme);
+        operations.push_back(*lexeme);
         break;
       case Type::OPEN_BR:
-        data.push(lexeme);
+        operations.push_back(*lexeme);
         break;
       case Type::DELIM:
-        // error = (str.size() > 0) ? move_from_stack(stack, stack_out, &i) : 1;
-        break;
-      case Type::OPERATOR:
-        // set_priority(lexeme);
-        // while (str.size() > 0 && stack->stack[i].type == OPERATOR &&
-        //       stack->stack[i].priority > lexeme->priority && !error) {
-        //   error = move_lexeme_to_stack(stack, stack_out, i);
-        //   i--;
-        // }
-        data.push(lexeme);
-        break;
-      case Type::CLOSE_BR:
-        if (str.size() > 0) {
-          // for_close_bracket(stack, stack_out, &i, &error);
+        if (operations.size() > 0) {
+          move_from_stack(&i);
         } else {
           error = Error::ERROR;
         }
         break;
-    }
-  }
-
-  Lexeme fill_lexeme(string str, size_t *i, double x) {
-    int sign = 0;
-    char symbol;
-    symbol = str[*i];
-    Type new_type = Type::NONE;
-    if (is_open_bracket(symbol)) {
-      new_type = Type::OPEN_BR;
-    } else if (is_closing_bracket(symbol)) {
-      new_type = Type::CLOSE_BR;
-    } else if (is_delimiter(symbol)) {
-      new_type = Type::DELIM;  // изначально было без добавления символа
-    } else if (is_operator(symbol)) {
-      if (*i == 0 || is_operator(str[*i - 1]) ||
-          is_open_bracket(str[*i - 1])) {
-        if (symbol == MINUS[0] && !sign) {
-          sign = 1;
-        } else if (symbol == MINUS[0]) {
-          sign = 0;
-        } else if (symbol != PLUS[0]) {
-          new_type = Type::OPERATOR;
+      case Type::OPERATOR:
+        set_priority(lexeme);
+        while (operations.size() > 0 && operations[i].type == Type::OPERATOR &&
+               operations[i].priority > lexeme->priority &&
+               error == Error::OK) {
+          move_lexeme_to_stack(i);
+          i--;
         }
-      } else {
-        new_type = Type::OPERATOR;
+        operations.push_back(*lexeme);
+        break;
+      case Type::CLOSE_BR:
+        if (operations.size() > 0) {
+          for_close_bracket(&i);
+        } else {
+          error = Error::ERROR;
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  string make_string(string stack_in, size_t *index_in) {
+    string str;
+    while (is_letter(stack_in[*index_in])) {
+      str += stack_in[*index_in];
+      ++(*index_in);
+    }
+    --(*index_in);
+    return str;
+  };
+
+  double make_number(double *number, size_t *index_in, char *symbol,
+                     int *shift) {
+    int need_shift = 0;
+    int need_shift_e = 0;
+    double out = 0.0;
+    if (*symbol == '.') need_shift = 1;
+    if (*symbol == 'e' || *symbol == 'E') need_shift_e = 1;
+    while ((*symbol = str[*index_in]) != '\0' && is_number(str[*index_in])) {
+      if (need_shift_e != 1)
+        *number = *number * 10.0 + (*symbol - '0');
+      else
+        out = out * 10 + (*symbol - '0');
+      if (need_shift == 1) (*shift)--;
+      (*index_in)++;
+    }
+    return out;
+  };
+
+  double parse_number_from_stack(size_t *index_in) {
+    double number = 0.0;
+    int shift = 0;
+    char symbol = str[*index_in];
+    make_number(&number, index_in, &symbol, &shift);
+    if (symbol == '.') {
+      make_number(&number, index_in, &symbol, &shift);
+      (*index_in)++;
+      make_number(&number, index_in, &symbol, &shift);
+    }
+    if (symbol == 'e' || symbol == 'E') {
+      double sh = 0;
+      int sign = 1;
+      (*index_in)++;
+      if (str[*index_in] == '-') {
+        sign = -1;
+      } else if (str[*index_in] != '+') {
+        error = Error::ERROR;
       }
-    } else if (is_letter(symbol) && is_letter(str[*i + 1])) {
-      char string[20] = "\0";
-      make_string(str, string, i);
-      if (is_function(string)) {
-        Lexeme lex(string, Type::FUNCTION);
-        return lex;
+      if (error == Error::OK) {
+        (*index_in)++;
+        sh = make_number(&number, index_in, &symbol, &shift);
+      }
+      shift += sh * sign;
+    }
+    for (; shift > 0; shift--) number *= 10.0;
+    for (; shift < 0; shift++) number *= 0.1;
+    (*index_in)--;
+    return number;
+  };
+
+  void make_operator(Lexeme *lex, string symbol, int *sign, size_t i) {
+    if (i == 0 || is_operator(str[i - 1]) || is_open_bracket(str[i - 1])) {
+      if (symbol[0] == MINUS[0] && !(*sign)) {
+        *sign = 1;
+      } else if (symbol[0] == MINUS[0]) {
+        *sign = 0;
+      } else if (symbol[0] != PLUS[0]) {
+        lex->set_valtype(symbol, Type::OPERATOR);
+      }
+    } else {
+      lex->set_valtype(symbol, Type::OPERATOR);
+    }
+  };
+
+  void parse_string(string symbol, string x, int *sign, size_t *i) {
+    Lexeme lex;
+    if (is_open_bracket(symbol[0])) {
+      lex.set_valtype(symbol, Type::OPEN_BR);
+    } else if (is_closing_bracket(symbol[0])) {
+      lex.set_valtype(symbol, Type::CLOSE_BR);
+    } else if (is_delimiter(symbol[0])) {
+      lex.set_valtype(symbol, Type::DELIM);
+    } else if (is_operator(symbol[0])) {
+      make_operator(&lex, symbol, sign, *i);
+    } else if (is_letter(symbol[0]) && is_letter(str[*i + 1])) {
+      string new_str = make_string(str, i);
+      if (is_function(new_str)) {
+        lex.set_valtype(new_str, Type::FUNCTION);
       } else {
         error = Error::ERROR;
       }
-    } else if (symbol == 'x') {
-      set_sign(&x, sign);
-      Lexeme lex(x, Type::NUMBER);
-      return lex;
-    } else if (is_number(symbol)) {
-      double number = 0.0;
-      error = parse_number_from_stack(str, i, &number);
-      set_sign(&number, sign);
-      Lexeme lex(number, Type::NUMBER);
-      return lex;
-    } else if (symbol != ' ' && symbol != 0) {
+    } else if (symbol[0] == 'x') {
+      if (x == "") {
+        error = Error::ERROR;
+      } else {
+        set_sign(&x, *sign);
+        *sign = 0;
+        symbol = x;
+        lex.set_valtype(symbol, Type::NUMBER);
+      }
+    } else if (is_number(symbol[0])) {
+      string number = std::to_string(parse_number_from_stack(i));
+      set_sign(&number, *sign);
+      *sign = 0;
+      lex.set_valtype(number, Type::NUMBER);
+    } else if (symbol[0] != ' ' && symbol[0] != 0) {
       error = Error::ERROR;
     }
-    Lexeme lex(symbol, new_type);
-    return lex;
-  }
-
-
-  void parser(string str, double x) {
-    for (size_t i = 0; i < str.size() && error != Error::OK; ++i) {    
-      Lexeme lexeme = fill_lexeme(str, &i, x);
-      if (error != Error::OK) {
-        // dijkstra_algorithm(stack, stack_out, lexeme);
-      } else {
-        break;
+    if (error == Error::OK) {
+      if (lex.type != Type::NONE) {
+        dijkstra_algorithm(&lex);
       }
     }
-    // size_t i = stack->size - 1;
-    // while (stack->size > 0 && error != Error::OK) {
-    //   if (stack->stack[i].operation[0] == '(') {
-    //     error = ERROR;
-    //     break;
-    //   }
-    //   error = move_lexeme_to_stack(stack, stack_out, i);
-    //   i--;
-    // }
-  }
+  };
 
-  string input(string str) {
+  void parser(string x) {
+    string symbol;
+    int sign = 0;
+    for (size_t i = 0; i < str.size() && error == Error::OK; ++i) {
+      symbol = str[i];
+      parse_string(symbol, x, &sign, &i);
+      if (error != Error::OK) break;
+    }
+
+    // printf("\n operations: ");
+    // for (auto elem : operations) {
+    //   std::cout << "\n" << elem.value << " " << elem.priority;
+    // }
+
+    // printf("\n data: \n");
+    // for (auto elem : data) {
+    //   std::cout << "\n" << elem.value << " ";
+    // }
+
+    size_t i = operations.size() - 1;
+    while (operations.size() > 0 && error == Error::OK) {
+      if (operations[i].value[0] == '(') {
+        error = Error::ERROR;
+        break;
+      }
+      move_lexeme_to_stack(i);
+      i--;
+    }
+  };
+
+  string preprocessing(string str) {
     string str2 = "";
     for (size_t i = 0; i < str.size(); i++) {
       char symbol = str[i];
       if (i > 0 &&
           (symbol == 'a' || symbol == 's' || symbol == 't' || symbol == 'l' ||
-          symbol == 'x') &&
+           symbol == 'x') &&
           is_number(str[i - 1])) {
         str2.insert(i, "*");
       }
@@ -213,9 +414,7 @@ class Model {
         str2.push_back(symbol);
     }
     return str2;
-  }
-
-
-}
+  };
+};
 
 #endif  // _SRC_PARSER_H_

@@ -1,17 +1,18 @@
 #ifndef INCLUDE_LEXEME_H_
 #define INCLUDE_LEXEME_H_
 
+#include <boost/any.hpp>
 #include <string>
 
 enum class Type { NONE, NUMBER, FUNCTION, OPEN_BR, DELIM, OPERATOR, CLOSE_BR };
 
-template <class T>
+// template <typename value_type>
 class Lexeme {
  public:
-  using value_type = T;
-  using string = std::string;
+  using value_type = std::string;
+  // using lexemePtr = Lexeme<value_type>*;
 
-  Lexeme() : value(nullptr), priority(0), type(Type::NONE){};
+  Lexeme() : value(""), priority(0), type(Type::NONE){};
 
   Lexeme(value_type value) : value(value), priority(0), type(Type::NONE){};
 
@@ -28,7 +29,12 @@ class Lexeme {
 
   ~Lexeme(){};
 
-  void set_type(int new_type) { type = new_type; };
+  void set_type(Type new_type) { type = new_type; };
+  void set_value(value_type new_value) { value = new_value; };
+  void set_valtype(value_type new_value, Type new_type) {
+    value = new_value;
+    type = new_type;
+  };
 
   void swap(Lexeme& other) noexcept {
     std::swap(value, other.value);
