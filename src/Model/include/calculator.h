@@ -40,7 +40,6 @@ class Model {
 
   Error calculator(string equation, string num_x) {
     str = preprocessing(equation);
-    std::cout << num_x;
     if (str.size() == 0) error = Error::ERROR;
     if (error == Error::OK) parser(num_x);
     if (error == Error::OK) make_calculations();
@@ -80,31 +79,28 @@ class Model {
   void make_calculations() {
     for (size_t i = 0; i < data.size() && error == Error::OK; ++i) {
       Lexeme lexeme = data[i];
-      std::optional opt_str = get_v_opt<string>(lexeme.value);
+      std::optional opt_str = get_v_opt<string>(lexeme.get_value());
       if (opt_str.has_value()) {
-        if (lexeme.type == Type::FUNCTION &&
-            std::any_cast<string>(lexeme.value) != MOD) {
+        if (lexeme.get_type() == Type::FUNCTION &&
+            std::any_cast<string>(lexeme.get_value()) != MOD) {
           if (data.size() < 2 || i < 1) error = Error::ERROR;
           if (error == Error::OK)
-            make_calc_func(std::any_cast<string>(lexeme.value), &i);
-        } else if (lexeme.type == Type::OPERATOR ||
-                   std::any_cast<string>(lexeme.value) == MOD) {
+            make_calc_func(std::any_cast<string>(lexeme.get_value()), &i);
+        } else if (lexeme.get_type() == Type::OPERATOR ||
+                   std::any_cast<string>(lexeme.get_value()) == MOD) {
           if (data.size() < 3) error = Error::ERROR;
           if (error == Error::OK)
-            make_calc_oper(std::any_cast<string>(lexeme.value), &i);
+            make_calc_oper(std::any_cast<string>(lexeme.get_value()), &i);
         }
       }
     }
-    if (error == Error::OK) {
-      answer = std::any_cast<double>(
-          data.front().value);  // мб сделать проверку на тип
-    }
+    if (error == Error::OK) answer = std::any_cast<double>(data.front().get_value());
   };
 
   void make_calc_func(string value, size_t *index) {
     double number = 0.0;
     Lexeme lexeme_1 = data[*index - 1];
-    double number_1 = std::any_cast<double>(lexeme_1.value);
+    double number_1 = std::any_cast<double>(lexeme_1.get_value());
     if (value == SQRT)
       number = sqrt(number_1);
     else if (value == SIN)
@@ -133,8 +129,8 @@ class Model {
     Lexeme lexeme_1 = data[*index - 2];
     Lexeme lexeme_2 = data[*index - 1];
     double number = 0.0;
-    double number_1 = std::any_cast<double>(lexeme_1.value);
-    double number_2 = std::any_cast<double>(lexeme_2.value);
+    double number_1 = std::any_cast<double>(lexeme_1.get_value());
+    double number_2 = std::any_cast<double>(lexeme_2.get_value());
     if (value == PLUS)
       number = number_1 + number_2;
     else if (value == MINUS)
@@ -191,27 +187,27 @@ class Model {
   };
 
   void set_priority(Lexeme *lexeme) {
-    string val = std::any_cast<string>(lexeme->value);
+    string val = std::any_cast<string>(lexeme->get_value());
     if (val == PLUS || val == MINUS) {
-      lexeme->priority = 1;
+      lexeme->set_priority(1);
     } else if (val == MUL || val == DIV || val == MOD) {
-      lexeme->priority = 2;
+      lexeme->set_priority(2);
     } else if (val == POW) {
-      lexeme->priority = 3;
+      lexeme->set_priority(3);
     } else if (val == COS || val == SIN || val == TAN || val == LOG ||
                val == SQRT || val == ACOS || val == ASIN || val == ATAN ||
                val == LN) {
-      lexeme->priority = 4;
+      lexeme->set_priority(4);
     }
   };
 
   void move_from_stack(size_t *i) {
-    // std::optional opt_str = get_v_opt<string>(lexeme.value);
+    // std::optional opt_str = get_v_opt<string>(lexeme.get_value());
     // if (opt_str.has_value()) {}
 
-
-    while (operations.size() > 0 && std::any_cast<string>(operations[*i].value)[0] != '(') {
-      if (*i == 0 && std::any_cast<string>(operations[*i].value)[0] != '(') {
+    while (operations.size() > 0 &&
+           std::any_cast<string>(operations[*i].get_value())[0] != '(') {
+      if (*i == 0 && std::any_cast<string>(operations[*i].get_value())[0] != '(') {
         error = Error::ERROR;
         break;
       }
@@ -230,18 +226,17 @@ class Model {
   void for_close_bracket(size_t *i) {
     move_from_stack(i);
     if (error == Error::OK && operations.size() > 0 &&
-        operations[*i - 1].type == Type::FUNCTION)
+        operations[*i - 1].get_type() == Type::FUNCTION)
       move_lexeme_to_stack(*i - 1);
   };
 
   void dijkstra_algorithm(Lexeme *lexeme) {
     size_t i = operations.size() - 1;
-    switch (lexeme->type) {
+    switch (lexeme->get_type()) {
       case Type::NUMBER:
         data.push_back(*lexeme);
         break;
       case Type::FUNCTION:
-        printf("\nHERE \n");
         set_priority(lexeme);
         operations.push_back(*lexeme);
         break;
@@ -253,13 +248,12 @@ class Model {
           move_from_stack(&i);
         } else {
           error = Error::ERROR;
-          
         }
         break;
       case Type::OPERATOR:
         set_priority(lexeme);
-        while (operations.size() > 0 && operations[i].type == Type::OPERATOR &&
-               operations[i].priority > lexeme->priority &&
+        while (operations.size() > 0 && operations[i].get_type() == Type::OPERATOR &&
+               operations[i].get_priority() > lexeme->get_priority() &&
                error == Error::OK) {
           move_lexeme_to_stack(i);
           i--;
@@ -271,7 +265,6 @@ class Model {
           for_close_bracket(&i);
         } else {
           error = Error::ERROR;
-          
         }
         break;
       default:
@@ -325,7 +318,6 @@ class Model {
         sign = -1;
       } else if (str[*index_in] != '+') {
         error = Error::ERROR;
-        
       }
       if (error == Error::OK) {
         (*index_in)++;
@@ -384,18 +376,17 @@ class Model {
       lex.set_valtype(number, Type::NUMBER);
     } else if (symbol[0] != ' ' && symbol[0] != 0) {
       error = Error::ERROR;
-      
     }
     if (error == Error::OK) {
-      if (lex.type != Type::NONE) {
+      if (lex.get_type() != Type::NONE) {
         dijkstra_algorithm(&lex);
       }
-      
     }
     // printf("\n !!!!!!!!operations: %ld", operations.size());
     // std::cout << "\n" <<symbol;
     // for (auto elem : operations) {
-    //   std::cout << "\n" << std::any_cast<string>(elem.value) << " " << symbol;
+    //   std::cout << "\n" << std::any_cast<string>(elem.value) << " " <<
+    //   symbol;
     // }
     // std::cout << "\n\n";
     // std::cout << std::any_cast<string>(lex.value) << "\n";
@@ -410,20 +401,21 @@ class Model {
       if (error != Error::OK) break;
     }
 
-    printf("\n operations: %ld", operations.size());
-    for (auto elem : operations) {
-      std::cout << "\n" << std::any_cast<string>(elem.value) << " " << elem.priority;
-    }
-    std::cout << "\n\n";
+    // printf("\n operations: %ld", operations.size());
+    // for (auto elem : operations) {
+    //   std::cout << "\n" << std::any_cast<string>(elem.value) << " " <<
+    //   elem.priority;
+    // }
+    // std::cout << "\n\n";
 
-    printf("\n data: \n");
-    for (auto elem : data) {
-      std::cout << "\n" << std::any_cast<double>(elem.value) << " ";
-    }
+    // printf("\n data: \n");
+    // for (auto elem : data) {
+    //   std::cout << "\n" << std::any_cast<double>(elem.value) << " ";
+    // }
 
     size_t i = operations.size() - 1;
     while (operations.size() > 0 && error == Error::OK) {
-      if (std::any_cast<string>(operations[i].value)[0] == '(') {
+      if (std::any_cast<string>(operations[i].get_value())[0] == '(') {
         error = Error::ERROR;
         break;
       }

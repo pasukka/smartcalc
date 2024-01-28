@@ -6,11 +6,9 @@
 
 enum class Type { NONE, NUMBER, FUNCTION, OPEN_BR, DELIM, OPERATOR, CLOSE_BR };
 
-// template <typename value_type>
 class Lexeme {
  public:
   using value_type = std::any;
-  // using lexemePtr = Lexeme<value_type>*;
 
   Lexeme() : value(""), priority(0), type(Type::NONE){};
 
@@ -29,8 +27,14 @@ class Lexeme {
 
   ~Lexeme(){};
 
+  Type get_type() { return type; };
+  value_type get_value() { return value; };
+  int get_priority() { return priority; };
+
   void set_type(Type new_type) { type = new_type; };
   void set_value(value_type new_value) { value = new_value; };
+  void set_priority(int new_priority) { priority = new_priority; };
+
   void set_valtype(value_type new_value, Type new_type) {
     value = new_value;
     type = new_type;
@@ -42,7 +46,7 @@ class Lexeme {
     std::swap(type, other.type);
   };
 
-  //  private:
+ private:
   value_type value;
   int priority;
   Type type;
