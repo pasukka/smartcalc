@@ -75,6 +75,7 @@ class Model {
   int is_function(string str);
   int is_operator(char symbol);
   int is_letter(char symbol);
+  int is_x(char symbol);
   void for_close_bracket(size_t *i);
 
   void set_sign(double *number, int *sign);

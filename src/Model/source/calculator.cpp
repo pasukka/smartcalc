@@ -29,7 +29,7 @@ Model::string Model::preprocessing(string str) {
     char symbol = str[i];
     if (i > 0 &&
         (symbol == 'a' || symbol == 's' || symbol == 't' || symbol == 'l' ||
-         symbol == 'x') &&
+         is_x(symbol)) &&
         is_number(str[i - 1])) {
       str2.insert(i, "*");
     }
@@ -51,7 +51,7 @@ void Model::parser() {
   }
   size_t i = operations.size() - 1;
   while (operations.size() > 0 && error == Error::OK) {
-    if (std::any_cast<string>(operations[i].get_value())[0] == '(') {
+    if (!is_open_bracket(std::any_cast<string>(operations[i].get_value())[0])) {
       error = Error::ERROR;
       break;
     }
@@ -77,7 +77,7 @@ void Model::parse_string(string symbol, int *sign, size_t *i) {
     } else {
       error = Error::ERROR;
     }
-  } else if (symbol[0] == 'x') {
+  } else if (is_x(symbol[0])) {
     if (x == "") {
       error = Error::ERROR;
     } else {
@@ -99,13 +99,15 @@ void Model::parse_string(string symbol, int *sign, size_t *i) {
   }
 };
 
+int Model::is_x(char symbol) { return (symbol == 'x'); };
+
 int Model::is_number(char symbol) { return (symbol >= 48 && symbol <= 57); };
 
-int Model::is_open_bracket(char symbol) { return (symbol == 40); };
+int Model::is_open_bracket(char symbol) { return (symbol == '('); };
 
-int Model::is_delimiter(char symbol) { return (symbol == 44); };
+int Model::is_delimiter(char symbol) { return (symbol == ','); };
 
-int Model::is_closing_bracket(char symbol) { return (symbol == 41); };
+int Model::is_closing_bracket(char symbol) { return (symbol == ')'); };
 
 int Model::is_function(string str) {
   return (str == MOD || str == COS || str == SIN || str == TAN || str == ACOS ||
@@ -148,9 +150,9 @@ void Model::set_priority(Lexeme *lexeme) {
 
 void Model::move_from_stack(size_t *i) {
   while (operations.size() > 0 &&
-         std::any_cast<string>(operations[*i].get_value())[0] != '(') {
+         !is_open_bracket(std::any_cast<string>(operations[*i].get_value())[0])) {
     if (*i == 0 &&
-        std::any_cast<string>(operations[*i].get_value())[0] != '(') {
+        !is_open_bracket(std::any_cast<string>(operations[*i].get_value())[0])) {
       error = Error::ERROR;
       break;
     }
@@ -197,9 +199,9 @@ double Model::parse_number_from_stack(size_t *index_in) {
     double sh = 0;
     int sign = 1;
     (*index_in)++;
-    if (str[*index_in] == '-') {
+    if (str[*index_in] == MINUS[0]) {
       sign = -1;
-    } else if (str[*index_in] != '+') {
+    } else if (str[*index_in] != PLUS[0]) {
       error = Error::ERROR;
     }
     if (error == Error::OK) {
