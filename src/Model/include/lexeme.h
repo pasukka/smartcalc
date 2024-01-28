@@ -2,7 +2,6 @@
 #define INCLUDE_LEXEME_H_
 
 #include <any>
-#include <boost/any.hpp>
 #include <string>
 
 enum class Type { NONE, NUMBER, FUNCTION, OPEN_BR, DELIM, OPERATOR, CLOSE_BR };

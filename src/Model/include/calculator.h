@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <optional>
 #include <stack>
 #include <vector>
 
@@ -40,21 +41,21 @@ class Model {
   Error calculator(string equation, string num_x) {
     str = preprocessing(equation);
     std::cout << num_x;
-    // if (str.size() == 0) error = Error::ERROR;
-    // if (error == Error::OK) parser(num_x);
-    // if (error == Error::OK) make_calculations();
+    if (str.size() == 0) error = Error::ERROR;
+    if (error == Error::OK) parser(num_x);
+    if (error == Error::OK) make_calculations();
 
-    std::cout << "\n answer: " << answer << "\n";
-    if (error == Error::OK)
-      printf("\n OK\n");
-    else if (error == Error::ERROR)
-      printf("\n ERROR\n");
-    else if (error == Error::NaN)
-      printf("\n NaN\n");
-    else if (error == Error::OOR)
-      printf("\n OOR\n");
-    else if (error == Error::OUT_OF_RANGE)
-      printf("\n OUT_OF_RANGE\n");
+    // std::cout << "\n answer: " << answer << "\n";
+    // if (error == Error::OK)
+    //   printf("\n OK\n");
+    // else if (error == Error::ERROR)
+    //   printf("\n ERROR\n");
+    // else if (error == Error::NaN)
+    //   printf("\n NaN\n");
+    // else if (error == Error::OOR)
+    //   printf("\n OOR\n");
+    // else if (error == Error::OUT_OF_RANGE)
+    //   printf("\n OUT_OF_RANGE\n");
     return error;
   };
 
@@ -68,24 +69,36 @@ class Model {
   double answer;
   Error error;
 
+  template <typename T>
+  std::optional<T> get_v_opt(const std::any &a) {
+    if (const T *v = std::any_cast<T>(&a))
+      return std::optional<T>(*v);
+    else
+      return std::nullopt;
+  }
+
   void make_calculations() {
     for (size_t i = 0; i < data.size() && error == Error::OK; ++i) {
       Lexeme lexeme = data[i];
-      string val = std::any_cast<string>(lexeme.value);
-
-      if (lexeme.type == Type::FUNCTION && val != MOD) {
-        if (data.size() < 2 || i < 1) error = Error::ERROR;
-        if (error == Error::OK)
-          make_calc_func(val, &i);
-      } else if (lexeme.type == Type::OPERATOR || val == MOD) {
-        if (data.size() < 3) error = Error::ERROR;
-        if (error == Error::OK)
-          make_calc_oper(val, &i);
+      std::optional opt_str = get_v_opt<string>(lexeme.value);
+      if (opt_str.has_value()) {
+        if (lexeme.type == Type::FUNCTION &&
+            std::any_cast<string>(lexeme.value) != MOD) {
+          if (data.size() < 2 || i < 1) error = Error::ERROR;
+          if (error == Error::OK)
+            make_calc_func(std::any_cast<string>(lexeme.value), &i);
+        } else if (lexeme.type == Type::OPERATOR ||
+                   std::any_cast<string>(lexeme.value) == MOD) {
+          if (data.size() < 3) error = Error::ERROR;
+          if (error == Error::OK)
+            make_calc_oper(std::any_cast<string>(lexeme.value), &i);
+        }
       }
     }
-    if (error == Error::OK)
+    if (error == Error::OK) {
       answer = std::any_cast<double>(
           data.front().value);  // мб сделать проверку на тип
+    }
   };
 
   void make_calc_func(string value, size_t *index) {
@@ -110,7 +123,7 @@ class Model {
       number = log(number_1);
     else if (value == LOG)
       number = log10(number_1);
-    data[*index - 1].set_value(std::to_string(number));
+    data[*index - 1].set_value(number);
     data.erase(data.begin() + *index);
     --(*index);
     if (number != number) error = Error::ERROR;
@@ -193,9 +206,12 @@ class Model {
   };
 
   void move_from_stack(size_t *i) {
-    char first_symbol = std::any_cast<string>(operations[*i].value)[0];
-    while (operations.size() > 0 && first_symbol != '(') {
-      if (*i == 0 && first_symbol != '(') {
+    // std::optional opt_str = get_v_opt<string>(lexeme.value);
+    // if (opt_str.has_value()) {}
+
+
+    while (operations.size() > 0 && std::any_cast<string>(operations[*i].value)[0] != '(') {
+      if (*i == 0 && std::any_cast<string>(operations[*i].value)[0] != '(') {
         error = Error::ERROR;
         break;
       }
@@ -225,6 +241,7 @@ class Model {
         data.push_back(*lexeme);
         break;
       case Type::FUNCTION:
+        printf("\nHERE \n");
         set_priority(lexeme);
         operations.push_back(*lexeme);
         break;
@@ -236,6 +253,7 @@ class Model {
           move_from_stack(&i);
         } else {
           error = Error::ERROR;
+          
         }
         break;
       case Type::OPERATOR:
@@ -253,6 +271,7 @@ class Model {
           for_close_bracket(&i);
         } else {
           error = Error::ERROR;
+          
         }
         break;
       default:
@@ -306,6 +325,7 @@ class Model {
         sign = -1;
       } else if (str[*index_in] != '+') {
         error = Error::ERROR;
+        
       }
       if (error == Error::OK) {
         (*index_in)++;
@@ -364,12 +384,21 @@ class Model {
       lex.set_valtype(number, Type::NUMBER);
     } else if (symbol[0] != ' ' && symbol[0] != 0) {
       error = Error::ERROR;
+      
     }
     if (error == Error::OK) {
       if (lex.type != Type::NONE) {
         dijkstra_algorithm(&lex);
       }
+      
     }
+    // printf("\n !!!!!!!!operations: %ld", operations.size());
+    // std::cout << "\n" <<symbol;
+    // for (auto elem : operations) {
+    //   std::cout << "\n" << std::any_cast<string>(elem.value) << " " << symbol;
+    // }
+    // std::cout << "\n\n";
+    // std::cout << std::any_cast<string>(lex.value) << "\n";
   };
 
   void parser(string x) {
@@ -381,16 +410,16 @@ class Model {
       if (error != Error::OK) break;
     }
 
-    printf("\n operations: ");
-    // for (auto elem : operations) {
-    //   std::cout << "\n" << elem.value << " " << elem.priority;
-    // }
+    printf("\n operations: %ld", operations.size());
+    for (auto elem : operations) {
+      std::cout << "\n" << std::any_cast<string>(elem.value) << " " << elem.priority;
+    }
+    std::cout << "\n\n";
 
     printf("\n data: \n");
-    // for (auto elem : data) {
-    //   if (elem.type().name == )
-    //   std::cout << "\n" << elem.value << " ";
-    // }
+    for (auto elem : data) {
+      std::cout << "\n" << std::any_cast<double>(elem.value) << " ";
+    }
 
     size_t i = operations.size() - 1;
     while (operations.size() > 0 && error == Error::OK) {
