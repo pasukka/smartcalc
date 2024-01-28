@@ -1,6 +1,7 @@
 #ifndef INCLUDE_LEXEME_H_
 #define INCLUDE_LEXEME_H_
 
+#include <any>
 #include <boost/any.hpp>
 #include <string>
 
@@ -9,7 +10,7 @@ enum class Type { NONE, NUMBER, FUNCTION, OPEN_BR, DELIM, OPERATOR, CLOSE_BR };
 // template <typename value_type>
 class Lexeme {
  public:
-  using value_type = std::string;
+  using value_type = std::any;
   // using lexemePtr = Lexeme<value_type>*;
 
   Lexeme() : value(""), priority(0), type(Type::NONE){};

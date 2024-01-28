@@ -39,21 +39,22 @@ class Model {
 
   Error calculator(string equation, string num_x) {
     str = preprocessing(equation);
-    if (str.size() == 0) error = Error::ERROR;
-    if (error == Error::OK) parser(num_x);
-    if (error == Error::OK) make_calculations();
+    std::cout << num_x;
+    // if (str.size() == 0) error = Error::ERROR;
+    // if (error == Error::OK) parser(num_x);
+    // if (error == Error::OK) make_calculations();
 
-    // std::cout << "\n answer: " << answer << "\n";
-    // if (error == Error::OK)
-    //   printf("\n OK\n");
-    // else if (error == Error::ERROR)
-    //   printf("\n ERROR\n");
-    // else if (error == Error::NaN)
-    //   printf("\n NaN\n");
-    // else if (error == Error::OOR)
-    //   printf("\n OOR\n");
-    // else if (error == Error::OUT_OF_RANGE)
-    //   printf("\n OUT_OF_RANGE\n");
+    std::cout << "\n answer: " << answer << "\n";
+    if (error == Error::OK)
+      printf("\n OK\n");
+    else if (error == Error::ERROR)
+      printf("\n ERROR\n");
+    else if (error == Error::NaN)
+      printf("\n NaN\n");
+    else if (error == Error::OOR)
+      printf("\n OOR\n");
+    else if (error == Error::OUT_OF_RANGE)
+      printf("\n OUT_OF_RANGE\n");
     return error;
   };
 
@@ -70,38 +71,44 @@ class Model {
   void make_calculations() {
     for (size_t i = 0; i < data.size() && error == Error::OK; ++i) {
       Lexeme lexeme = data[i];
-      if (lexeme.type == Type::FUNCTION && lexeme.value != MOD) {
+      string val = std::any_cast<string>(lexeme.value);
+
+      if (lexeme.type == Type::FUNCTION && val != MOD) {
         if (data.size() < 2 || i < 1) error = Error::ERROR;
-        if (error == Error::OK) make_calc_func(&lexeme, &i);
-      } else if (lexeme.type == Type::OPERATOR || lexeme.value == MOD) {
+        if (error == Error::OK)
+          make_calc_func(val, &i);
+      } else if (lexeme.type == Type::OPERATOR || val == MOD) {
         if (data.size() < 3) error = Error::ERROR;
-        if (error == Error::OK) make_calc_oper(&lexeme, &i);
+        if (error == Error::OK)
+          make_calc_oper(val, &i);
       }
     }
-    if (error == Error::OK) answer = std::stod(data.front().value);
+    if (error == Error::OK)
+      answer = std::any_cast<double>(
+          data.front().value);  // мб сделать проверку на тип
   };
 
-  void make_calc_func(Lexeme *lexeme, size_t *index) {
+  void make_calc_func(string value, size_t *index) {
     double number = 0.0;
     Lexeme lexeme_1 = data[*index - 1];
-    double number_1 = std::stod(lexeme_1.value);
-    if (lexeme->value == SQRT)
+    double number_1 = std::any_cast<double>(lexeme_1.value);
+    if (value == SQRT)
       number = sqrt(number_1);
-    else if (lexeme->value == SIN)
+    else if (value == SIN)
       number = sin(number_1);
-    else if (lexeme->value == COS)
+    else if (value == COS)
       number = cos(number_1);
-    else if (lexeme->value == TAN)
+    else if (value == TAN)
       number = tan(number_1);
-    else if (lexeme->value == ASIN)
+    else if (value == ASIN)
       number = asin(number_1);
-    else if (lexeme->value == ACOS)
+    else if (value == ACOS)
       number = acos(number_1);
-    else if (lexeme->value == ATAN)
+    else if (value == ATAN)
       number = atan(number_1);
-    else if (lexeme->value == LN)
+    else if (value == LN)
       number = log(number_1);
-    else if (lexeme->value == LOG)
+    else if (value == LOG)
       number = log10(number_1);
     data[*index - 1].set_value(std::to_string(number));
     data.erase(data.begin() + *index);
@@ -109,28 +116,28 @@ class Model {
     if (number != number) error = Error::ERROR;
   };
 
-  void make_calc_oper(Lexeme *lexeme, size_t *index) {
+  void make_calc_oper(string value, size_t *index) {
     Lexeme lexeme_1 = data[*index - 2];
     Lexeme lexeme_2 = data[*index - 1];
     double number = 0.0;
-    double number_1 = std::stod(lexeme_1.value);
-    double number_2 = std::stod(lexeme_2.value);
-    if (lexeme->value == PLUS)
+    double number_1 = std::any_cast<double>(lexeme_1.value);
+    double number_2 = std::any_cast<double>(lexeme_2.value);
+    if (value == PLUS)
       number = number_1 + number_2;
-    else if (lexeme->value == MINUS)
+    else if (value == MINUS)
       number = number_1 - number_2;
-    else if (lexeme->value == MUL)
+    else if (value == MUL)
       number = number_1 * number_2;
-    else if (lexeme->value == DIV && number_2 == 0)
+    else if (value == DIV && number_2 == 0)
       error = Error::NaN;
-    else if (lexeme->value == DIV)
+    else if (value == DIV)
       number = number_1 / number_2;
-    else if (lexeme->value == POW)
+    else if (value == POW)
       number = pow(number_1, number_2);
-    else if (lexeme->value == MOD)
+    else if (value == MOD)
       number = fmod(number_1, number_2);
     if (error == Error::OK) {
-      data[*index - 2].set_value(std::to_string(number));
+      data[*index - 2].set_value(number);
       data.erase(data.begin() + *index);
       data.erase(data.begin() + *index - 1);
       (*index) -= 2;
@@ -163,33 +170,32 @@ class Model {
     return ((symbol >= 65 && symbol <= 90) || (symbol >= 97 && symbol <= 122));
   };
 
-  void set_sign(string *number, int sign) {
-    if (sign) {
-      (*number) = MINUS + *number;
-      sign = 0;
+  void set_sign(double *number, int *sign) {
+    if (*sign) {
+      (*number) *= -1;
+      *sign = 0;
     }
   };
 
   void set_priority(Lexeme *lexeme) {
-    if (lexeme->value == PLUS || lexeme->value == MINUS) {
+    string val = std::any_cast<string>(lexeme->value);
+    if (val == PLUS || val == MINUS) {
       lexeme->priority = 1;
-    } else if (lexeme->value == MUL || lexeme->value == DIV ||
-               lexeme->value == MOD) {
+    } else if (val == MUL || val == DIV || val == MOD) {
       lexeme->priority = 2;
-    } else if (lexeme->value == POW) {
+    } else if (val == POW) {
       lexeme->priority = 3;
-    } else if (lexeme->value == COS || lexeme->value == SIN ||
-               lexeme->value == TAN || lexeme->value == LOG ||
-               lexeme->value == SQRT || lexeme->value == ACOS ||
-               lexeme->value == ASIN || lexeme->value == ATAN ||
-               lexeme->value == LN) {
+    } else if (val == COS || val == SIN || val == TAN || val == LOG ||
+               val == SQRT || val == ACOS || val == ASIN || val == ATAN ||
+               val == LN) {
       lexeme->priority = 4;
     }
   };
 
   void move_from_stack(size_t *i) {
-    while (operations.size() > 0 && operations[*i].value[0] != '(') {
-      if (*i == 0 && operations[*i].value[0] != '(') {
+    char first_symbol = std::any_cast<string>(operations[*i].value)[0];
+    while (operations.size() > 0 && first_symbol != '(') {
+      if (*i == 0 && first_symbol != '(') {
         error = Error::ERROR;
         break;
       }
@@ -348,15 +354,13 @@ class Model {
       if (x == "") {
         error = Error::ERROR;
       } else {
-        set_sign(&x, *sign);
-        *sign = 0;
-        symbol = x;
-        lex.set_valtype(symbol, Type::NUMBER);
+        double num_x = std::stod(x);
+        set_sign(&num_x, sign);
+        lex.set_valtype(num_x, Type::NUMBER);
       }
     } else if (is_number(symbol[0])) {
-      string number = std::to_string(parse_number_from_stack(i));
-      set_sign(&number, *sign);
-      *sign = 0;
+      double number = parse_number_from_stack(i);
+      set_sign(&number, sign);
       lex.set_valtype(number, Type::NUMBER);
     } else if (symbol[0] != ' ' && symbol[0] != 0) {
       error = Error::ERROR;
@@ -377,19 +381,20 @@ class Model {
       if (error != Error::OK) break;
     }
 
-    // printf("\n operations: ");
+    printf("\n operations: ");
     // for (auto elem : operations) {
     //   std::cout << "\n" << elem.value << " " << elem.priority;
     // }
 
-    // printf("\n data: \n");
+    printf("\n data: \n");
     // for (auto elem : data) {
+    //   if (elem.type().name == )
     //   std::cout << "\n" << elem.value << " ";
     // }
 
     size_t i = operations.size() - 1;
     while (operations.size() > 0 && error == Error::OK) {
-      if (operations[i].value[0] == '(') {
+      if (std::any_cast<string>(operations[i].value)[0] == '(') {
         error = Error::ERROR;
         break;
       }
