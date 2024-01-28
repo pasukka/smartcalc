@@ -94,7 +94,8 @@ class Model {
         }
       }
     }
-    if (error == Error::OK) answer = std::any_cast<double>(data.front().get_value());
+    if (error == Error::OK)
+      answer = std::any_cast<double>(data.front().get_value());
   };
 
   void make_calc_func(string value, size_t *index) {
@@ -204,7 +205,8 @@ class Model {
   void move_from_stack(size_t *i) {
     while (operations.size() > 0 &&
            std::any_cast<string>(operations[*i].get_value())[0] != '(') {
-      if (*i == 0 && std::any_cast<string>(operations[*i].get_value())[0] != '(') {
+      if (*i == 0 &&
+          std::any_cast<string>(operations[*i].get_value())[0] != '(') {
         error = Error::ERROR;
         break;
       }
@@ -249,7 +251,8 @@ class Model {
         break;
       case Type::OPERATOR:
         set_priority(lexeme);
-        while (operations.size() > 0 && operations[i].get_type() == Type::OPERATOR &&
+        while (operations.size() > 0 &&
+               operations[i].get_type() == Type::OPERATOR &&
                operations[i].get_priority() > lexeme->get_priority() &&
                error == Error::OK) {
           move_lexeme_to_stack(i);
