@@ -38,7 +38,7 @@ class Model {
 
   ~Model(){};
 
-  Error calculator(string equation, string num_x) {
+  Error calculate(string equation, string num_x) {
     str = preprocessing(equation);
     if (str.size() == 0) error = Error::ERROR;
     if (error == Error::OK) parser(num_x);
@@ -202,9 +202,6 @@ class Model {
   };
 
   void move_from_stack(size_t *i) {
-    // std::optional opt_str = get_v_opt<string>(lexeme.get_value());
-    // if (opt_str.has_value()) {}
-
     while (operations.size() > 0 &&
            std::any_cast<string>(operations[*i].get_value())[0] != '(') {
       if (*i == 0 && std::any_cast<string>(operations[*i].get_value())[0] != '(') {
@@ -382,14 +379,6 @@ class Model {
         dijkstra_algorithm(&lex);
       }
     }
-    // printf("\n !!!!!!!!operations: %ld", operations.size());
-    // std::cout << "\n" <<symbol;
-    // for (auto elem : operations) {
-    //   std::cout << "\n" << std::any_cast<string>(elem.value) << " " <<
-    //   symbol;
-    // }
-    // std::cout << "\n\n";
-    // std::cout << std::any_cast<string>(lex.value) << "\n";
   };
 
   void parser(string x) {
@@ -400,19 +389,6 @@ class Model {
       parse_string(symbol, x, &sign, &i);
       if (error != Error::OK) break;
     }
-
-    // printf("\n operations: %ld", operations.size());
-    // for (auto elem : operations) {
-    //   std::cout << "\n" << std::any_cast<string>(elem.value) << " " <<
-    //   elem.priority;
-    // }
-    // std::cout << "\n\n";
-
-    // printf("\n data: \n");
-    // for (auto elem : data) {
-    //   std::cout << "\n" << std::any_cast<double>(elem.value) << " ";
-    // }
-
     size_t i = operations.size() - 1;
     while (operations.size() > 0 && error == Error::OK) {
       if (std::any_cast<string>(operations[i].get_value())[0] == '(') {
