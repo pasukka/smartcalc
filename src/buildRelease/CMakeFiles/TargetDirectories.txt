@@ -1,4 +1,0 @@
-/home/kristina/Desktop/my calc/smartcalc/src/buildRelease/CMakeFiles/s21_SmartCalculator.dir
-/home/kristina/Desktop/my calc/smartcalc/src/buildRelease/CMakeFiles/edit_cache.dir
-/home/kristina/Desktop/my calc/smartcalc/src/buildRelease/CMakeFiles/rebuild_cache.dir
-/home/kristina/Desktop/my calc/smartcalc/src/buildRelease/CMakeFiles/s21_SmartCalculator_autogen.dir
