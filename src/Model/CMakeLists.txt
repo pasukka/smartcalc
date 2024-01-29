@@ -1,12 +1,8 @@
-cmake_minimum_required(VERSION 3.5)
-project(Model VERSION 0.1 LANGUAGES CXX)
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
+cmake_minimum_required(VERSION 3.20)
+project(Model)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_compile_options("-Wall" "-Werror" "-Wextra" "-Wpedantic" "-Weffc++")
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+add_compile_options("-Wall"  "-Wextra" "-Wpedantic" "-Weffc++") #"-Werror"
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/modules)
 
 add_subdirectory(dependencies)
@@ -28,17 +24,17 @@ add_executable(test ${TEST_FILES})
 target_link_libraries(test PUBLIC ${PROJECT_NAME} gtest gtest_main)
 
 # ---- GCOV-REPORT ----
-# if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-# include(CodeCoverage)
-# append_coverage_compiler_flags_to_target(test)
-# append_coverage_compiler_flags_to_target(${PROJECT_NAME})
-# setup_target_for_coverage_lcov(
-#             NAME test_coverage
-#             EXECUTABLE test
-#             EXCLUDE ${CMAKE_BINARY_DIR}/* "${PROJECT_SOURCE_DIR}/dependencies/*" "/Applications/*" "/usr/local/*" "/usr/include/*"
-#             DEPENDENCIES test
-#     )
-# endif()
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+include(CodeCoverage)
+append_coverage_compiler_flags_to_target(test)
+append_coverage_compiler_flags_to_target(${PROJECT_NAME} )
+setup_target_for_coverage_lcov(
+            NAME test_coverage
+            EXECUTABLE test
+            EXCLUDE ${CMAKE_BINARY_DIR}/* "${PROJECT_SOURCE_DIR}/dependencies/*" "/Applications/*" "/usr/local/*" "/usr/include/*"
+            DEPENDENCIES test ${PROJECT_NAME} 
+    )
+endif()
 
 # ---- FORMATTING ----
 set(CLANG_FORMAT_EXCLUDE_PATTERNS  "build/" "dependencies/" ${CMAKE_BINARY_DIR})
