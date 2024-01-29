@@ -1,61 +1,79 @@
 cmake_minimum_required(VERSION 3.5)
-
-project(s21_SmartCalculator VERSION 0.1 LANGUAGES CXX)
+project(s21_SmartCalculator)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
+    add_compile_options("-Wall" "-Werror" "-Wextra" "-Wpedantic" "-Weffc++")
+else()
+    message("WE NEED GCC FOR CODE COVERAGE AND COMPILE OPTIONS REQUIRED BY SCHOOL")
+endif()
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/modules)
+
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+# set(CMAKE_AUTOUIC ON)
+# set(CMAKE_AUTOMOC ON)
+# set(CMAKE_AUTORCC ON)
 
-set(PROJECT_SOURCES
-        ./lib/main.cpp
-        ./lib/mainwindow.cpp
-        ./lib/mainwindow.h
-        ./lib/mainwindow.ui
-        qcustomplot.cpp
-        qcustomplot.h
-)
+add_subdirectory(Model)
+add_subdirectory(View)
+add_subdirectory(dependencies)
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(s21_SmartCalculator
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET s21_SmartCalculator APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(s21_SmartCalculator SHARED
-            ${PROJECT_SOURCES}
-        )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(s21_SmartCalculator
-            ${PROJECT_SOURCES}
-        )
-    endif()
-endif()
 
-target_link_libraries(s21_SmartCalculator PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+# ---- TEST COMPILATION ----
+cmake_path(APPEND OBJECTS_PATH "${CMAKE_SOURCE_DIR}" "Model" "test")
+#file(GLOB TEST_FILES CONFIGURE_DEPENDS ${CMAKE_CURRENT_LIST_DIR}/Model/test/*.cc)
+#add_executable(test ${TEST_FILES})
+#target_link_libraries(test PUBLIC ${PROJECT_NAME} gtest gtest_main)
 
-set_target_properties(s21_SmartCalculator PROPERTIES
-    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
+# ---- FORMATTING ----
+set(CLANG_FORMAT_EXCLUDE_PATTERNS  "build/" "dependencies/" ${CMAKE_BINARY_DIR})
+find_package(ClangFormat)
 
-if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(s21_SmartCalculator)
-endif()
+# cmake_path(APPEND OBJECTS_PATH "${CMAKE_SOURCE_DIR}" "View" "test")
+# configure_file(settings_path.h.in settings_path.h @ONLY)
+# add_subdirectory(View)
+
+# find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
+# find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
+
+# # remove this 
+# set(PROJECT_SOURCES
+#         ./View/source/main.cpp
+#         ./View/source/mainwindow.cpp
+#         ./View/include/mainwindow.h
+#         ./View/source/mainwindow.ui
+#         qcustomplot.cpp
+#         qcustomplot.h
+# )
+
+# if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+#     qt_add_executable(s21_SmartCalculator
+#         MANUAL_FINALIZATION
+#         ${PROJECT_SOURCES}
+#     )
+#     target_link_libraries(s21_SmartCalculator PRIVATE View Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::OpenGLWidgets Qt${QT_VERSION_MAJOR}::OpenGL giflib)
+# else()
+#     add_executable(s21_SmartCalculator
+#             ${PROJECT_SOURCES}
+#     )
+#     target_link_libraries(s21_SmartCalculator PRIVATE View Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui giflib)
+# endif()
+
+# target_link_libraries(s21_SmartCalculator PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+# set_target_properties(s21_SmartCalculator PROPERTIES
+#     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+#     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+#     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+#     MACOSX_BUNDLE TRUE
+#     WIN32_EXECUTABLE TRUE
+# )
+
+# if(QT_VERSION_MAJOR EQUAL 6)
+#     qt_finalize_executable(s21_SmartCalculator)
+# endif()
+
