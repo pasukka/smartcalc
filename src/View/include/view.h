@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef VIEW_H
+#define VIEW_H
 
 #include <QMainWindow>
 
@@ -18,4 +18,4 @@ public:
 private:
     Ui::MainWindow *ui;
 };
-#endif // MAINWINDOW_H
+#endif // VIEW_H
