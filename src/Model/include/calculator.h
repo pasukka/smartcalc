@@ -25,6 +25,7 @@
 #define SQRT "sqrt"
 #define LN "ln"
 #define LOG "log"
+#define EQUAL "="
 
 enum class Error { OK, ERROR, NaN, OOR, OUT_OF_RANGE };
 
@@ -34,19 +35,20 @@ class Model {
   using deque = std::deque<Lexeme>;
   using vector = std::vector<Lexeme>;
 
-  Model()
-      : operations(), data(), x(""), str(""), answer(0.0), error(Error::OK){};
+  Model() : equation(""), data(), x(""), answer(0.0), error(Error::OK){};
 
   ~Model(){};
 
-  Error calculate(string equation, string num_x);
+  Error calculate();
   double get_answer();
+  void set_x(string new_x);
+  void update_equation(string new_symbols);
+  void reset_equation();
 
  private:
-  vector operations;
+  string equation;
   deque data;
   string x;
-  string str;
   double answer;
   Error error;
 
@@ -58,15 +60,15 @@ class Model {
       return std::nullopt;
   }
 
-  string preprocessing(string str);
+  void preprocessing();
   void parser();
-  void parse_string(string symbol, int *sign, size_t *i);
+  void parse_string(vector *operations, string symbol, int *sign, size_t *i);
 
   void make_calculations();
   void apply_function(string value, size_t *index);
   void apply_operation(string value, size_t *index);
 
-  void dijkstra_algorithm(Lexeme *lexeme);
+  void dijkstra_algorithm(vector *operations, Lexeme *lexeme);
 
   int is_number(char symbol);
   int is_open_bracket(char symbol);
@@ -76,13 +78,14 @@ class Model {
   int is_operator(char symbol);
   int is_letter(char symbol);
   int is_x(char symbol);
-  void for_close_bracket(size_t *i);
+  int is_func_first_letter(char symbol);
+  void for_close_bracket(vector *operations, size_t *i);
 
   void set_sign(double *number, int *sign);
   void set_priority(Lexeme *lexeme);
 
-  void move_from_stack(size_t *i);
-  void move_lexeme_to_stack(size_t index);
+  void move_from_stack(vector *operations, size_t *i);
+  void move_lexeme_to_stack(vector *operations, size_t index);
 
   string make_string(string stack_in, size_t *index_in);
   double make_number(double *number, size_t *index_in, char *symbol,
