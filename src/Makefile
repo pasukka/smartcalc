@@ -11,7 +11,7 @@ GNU_COMPILER = -D CMAKE_CXX_COMPILER=g++ -D CMAKE_C_COMPILER=gcc
 SRC_DIR = ./lib
 SRC_EXT = cc
 TEST_PATH = buildRelease/test
-APP_OPEN = ./buildRelease/View
+APP_OPEN = ./buildRelease/s21_SmartCalculator
 
 .PHONY: all clean test
 
@@ -25,6 +25,8 @@ clean:
 
 install: buildRelease
 	@cmake --build buildRelease
+
+uninstall: clean
 
 open: install
 	${APP_OPEN}
