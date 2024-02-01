@@ -1,18 +1,37 @@
 #include "model.h"
 
-double Model::get_answer() { return answer; };
+Model::string Model::get_answer() { return answer; };
+
+Model::string Model::get_x() { return x; };
 
 void Model::set_x(string new_x) { x = new_x; };
 
+Model::string Model::get_equation() { return equation; };
+
 void Model::reset_equation() { equation = ""; };
 
-void Model::update_equation(string new_symbols) { equation += new_symbols; };
+void Model::reset_x() { x = ""; };
+
+void Model::del_elem_data() {
+  if (!equation.empty()) equation.pop_back();
+}
+
+void Model::update_data(string new_symbols) {
+  equation = new_symbols;
+  answer = "";
+  x = "";
+  data.clear();
+  error = Error::OK;
+};
 
 Error Model::calculate() {
+  setlocale(LC_ALL, "C");
   preprocessing();
   if (equation.size() == 0) error = Error::ERROR;
   if (error == Error::OK) parser();
   if (error == Error::OK) make_calculations();
+  if (error == Error::OK)
+    answer = std::to_string(std::any_cast<double>(data.front().get_value()));
   return error;
 };
 
@@ -321,8 +340,6 @@ void Model::make_calculations() {
       }
     }
   }
-  if (error == Error::OK)
-    answer = std::any_cast<double>(data.front().get_value());
 };
 
 void Model::apply_function(string value, size_t *index) {

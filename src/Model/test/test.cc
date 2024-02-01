@@ -9,7 +9,7 @@ TEST(ParserTest, Error_1) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -19,7 +19,7 @@ TEST(ParserTest, Error_2) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -29,7 +29,7 @@ TEST(ParserTest, Error_3) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -39,7 +39,7 @@ TEST(ParserTest, Error_4) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -49,7 +49,7 @@ TEST(ParserTest, Error_5) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -59,7 +59,7 @@ TEST(ParserTest, Error_6) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -69,7 +69,7 @@ TEST(ParserTest, Error_7) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -79,7 +79,7 @@ TEST(ParserTest, Error_8) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -89,7 +89,7 @@ TEST(ParserTest, Error_9) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -99,7 +99,7 @@ TEST(ParserTest, Error_10) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -109,7 +109,7 @@ TEST(ParserTest, Error_11) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -119,7 +119,7 @@ TEST(ParserTest, Error_12) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -129,7 +129,7 @@ TEST(ParserTest, Error_13) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -139,7 +139,7 @@ TEST(ParserTest, Error_14) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -149,7 +149,7 @@ TEST(ParserTest, Error_15) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -159,7 +159,7 @@ TEST(ParserTest, Error_16) {
   std::string x = "2";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -169,7 +169,7 @@ TEST(ParserTest, Error_17) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::ERROR);
 }
@@ -179,7 +179,7 @@ TEST(ParserTest, Error_18) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::NaN);
 }
@@ -189,10 +189,10 @@ TEST(ParserTest, Test_1) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 0.98935824662, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 0.98935824662, EPSILON);
 }
 
 TEST(ParserTest, Test_2) {
@@ -200,10 +200,10 @@ TEST(ParserTest, Test_2) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 12.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 12.0, EPSILON);
 }
 
 TEST(ParserTest, Test_3) {
@@ -211,10 +211,10 @@ TEST(ParserTest, Test_3) {
   std::string x = "";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 1.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 1.0, EPSILON);
 }
 
 TEST(ParserTest, Test_4) {
@@ -222,10 +222,10 @@ TEST(ParserTest, Test_4) {
   std::string x = "8";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 0.989358, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 0.989358, EPSILON);
 }
 
 TEST(ParserTest, Test_5) {
@@ -233,10 +233,10 @@ TEST(ParserTest, Test_5) {
   std::string x = "2";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 0.960170, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 0.960170, EPSILON);
 }
 
 TEST(ParserTest, Test_6) {
@@ -244,10 +244,10 @@ TEST(ParserTest, Test_6) {
   std::string x = "2";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -2.185040, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -2.185040, EPSILON);
 }
 
 TEST(ParserTest, Test_7) {
@@ -255,10 +255,10 @@ TEST(ParserTest, Test_7) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 1.107149, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 1.107149, EPSILON);
 }
 
 TEST(ParserTest, Test_8) {
@@ -266,10 +266,10 @@ TEST(ParserTest, Test_8) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 32, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 32, EPSILON);
 }
 
 TEST(ParserTest, Test_9) {
@@ -277,10 +277,10 @@ TEST(ParserTest, Test_9) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 0.087030, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 0.087030, EPSILON);
 }
 
 TEST(ParserTest, Test_10) {
@@ -288,10 +288,10 @@ TEST(ParserTest, Test_10) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 2.079441, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 2.079441, EPSILON);
 }
 
 TEST(ParserTest, Test_11) {
@@ -299,10 +299,10 @@ TEST(ParserTest, Test_11) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -1.091514, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -1.091514, EPSILON);
 }
 
 TEST(ParserTest, Test_12) {
@@ -310,10 +310,10 @@ TEST(ParserTest, Test_12) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 2.908485, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 2.908485, EPSILON);
 }
 
 TEST(ParserTest, Test_13) {
@@ -321,23 +321,26 @@ TEST(ParserTest, Test_13) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 0.100167, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 0.100167, EPSILON);
 }
 
 TEST(ParserTest, Test_14) {
   Model m;
-  std::string str = "sqrt";
-  m.update_equation(str);
-  str = "(2)";
+  std::string str = "sqrt(2)";
   std::string x = "4";
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 1.414214, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 1.414214, EPSILON);
+  str = "3+4";
+  m.update_data(str);
+  error = m.calculate();
+  EXPECT_EQ(error, Error::OK);
+  EXPECT_NEAR(stod(m.get_answer()), 7, EPSILON);
 }
 
 TEST(ParserTest, Test_15) {
@@ -345,10 +348,10 @@ TEST(ParserTest, Test_15) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 1024, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 1024, EPSILON);
 }
 
 TEST(ParserTest, Test_16) {
@@ -356,10 +359,10 @@ TEST(ParserTest, Test_16) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 2, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 2, EPSILON);
 }
 
 TEST(ParserTest, Test_17) {
@@ -367,10 +370,10 @@ TEST(ParserTest, Test_17) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 1.470629, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 1.470629, EPSILON);
 }
 
 TEST(ParserTest, Test_18) {
@@ -378,10 +381,10 @@ TEST(ParserTest, Test_18) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -12, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -12, EPSILON);
 }
 
 TEST(ParserTest, Test_19) {
@@ -389,10 +392,10 @@ TEST(ParserTest, Test_19) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 12, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 12, EPSILON);
 }
 
 TEST(ParserTest, Test_20) {
@@ -400,10 +403,10 @@ TEST(ParserTest, Test_20) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 8, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 8, EPSILON);
 }
 
 TEST(ParserTest, Test_21) {
@@ -411,10 +414,10 @@ TEST(ParserTest, Test_21) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -8, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -8, EPSILON);
 }
 
 TEST(ParserTest, Test_22) {
@@ -422,10 +425,10 @@ TEST(ParserTest, Test_22) {
   std::string x = "4";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 10, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 10, EPSILON);
 }
 
 TEST(ParserTest, Test_23) {
@@ -433,10 +436,10 @@ TEST(ParserTest, Test_23) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 6.134649, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 6.134649, EPSILON);
 }
 
 TEST(ParserTest, Test_24) {
@@ -444,10 +447,10 @@ TEST(ParserTest, Test_24) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 4.371062, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 4.371063, EPSILON);
 }
 
 TEST(ParserTest, Test_25) {
@@ -455,10 +458,10 @@ TEST(ParserTest, Test_25) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -2.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -2.0, EPSILON);
 }
 
 TEST(ParserTest, Test_26) {
@@ -466,10 +469,10 @@ TEST(ParserTest, Test_26) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), 6.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), 6.0, EPSILON);
 }
 
 TEST(ParserTest, Test_27) {
@@ -477,10 +480,10 @@ TEST(ParserTest, Test_27) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -2.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -2.0, EPSILON);
 }
 
 TEST(ParserTest, Test_28) {
@@ -488,10 +491,10 @@ TEST(ParserTest, Test_28) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -2.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -2.0, EPSILON);
 }
 
 TEST(ParserTest, Test_29) {
@@ -499,10 +502,10 @@ TEST(ParserTest, Test_29) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -0.100167, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -0.100167, EPSILON);
 }
 
 TEST(ParserTest, Test_30) {
@@ -510,10 +513,10 @@ TEST(ParserTest, Test_30) {
   std::string x = "1.0";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -10.0, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -10.0, EPSILON);
 }
 
 TEST(ParserTest, Test_31) {
@@ -521,10 +524,10 @@ TEST(ParserTest, Test_31) {
   std::string x = "2.980000";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -0.16089, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -0.16089, EPSILON);
 }
 
 TEST(ParserTest, Test_32) {
@@ -532,10 +535,10 @@ TEST(ParserTest, Test_32) {
   std::string x = "2.980000";
   Model m;
   m.set_x(x);
-  m.update_equation(str);
+  m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
-  EXPECT_NEAR(m.get_answer(), -0.16089, EPSILON);
+  EXPECT_NEAR(stod(m.get_answer()), -0.16089, EPSILON);
 }
 
 int main(int argc, char** argv) {

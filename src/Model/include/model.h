@@ -1,5 +1,7 @@
-#ifndef _SRC_PARSER_H_
-#define _SRC_PARSER_H_
+#ifndef MODEL_H
+#define MODEL_H
+
+#include <locale.h>
 
 #include <cmath>
 #include <iostream>
@@ -35,23 +37,25 @@ class Model {
   using deque = std::deque<Lexeme>;
   using vector = std::vector<Lexeme>;
 
-  Model() : equation(""), data(), x(""), answer(0.0), error(Error::OK){};
+  Model() : equation(""), data(), x(""), answer(""), error(Error::OK){};
 
   ~Model(){};
 
   Error calculate();
-  double get_answer();
+  string get_answer();
   void set_x(string new_x);
-  void update_equation(string new_symbols);
+  void update_data(string new_symbols);
   void reset_equation();
-
-  // TODO: DELETE FROM EQUASION
+  void reset_x();
+  string get_equation();
+  string get_x();
+  void del_elem_data();
 
  private:
   string equation;
   deque data;
   string x;
-  double answer;
+  string answer;
   Error error;
 
   template <typename T>
@@ -96,4 +100,4 @@ class Model {
   double parse_number_from_stack(size_t *index_in);
 };
 
-#endif  // _SRC_PARSER_H_
+#endif  // MODEL_H
