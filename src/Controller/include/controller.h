@@ -1,5 +1,5 @@
-#ifndef EXAMPLECONTROLLER_H
-#define EXAMPLECONTROLLER_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
 #include "model.h"
 
@@ -12,10 +12,14 @@ class Controller {
 
   Controller(Model *m) : model(m){};
 
-  double calculate();
+  string calculate();
   void set_x(string new_x);
-  void update_equation(string new_symbols);
-  void reset_equation();
+  string reset_x();
+  void update_data(string new_symbols);
+  string reset_equation();
+  string del_elem_data();
+
+
 };
 
 #endif

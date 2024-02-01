@@ -1,36 +1,28 @@
 #include "controller.h"
 
-double Controller::calculate() {
+Model::string Controller::calculate() {
   Error err = model->calculate();
+  // printf("\n%d\n", err);
   return model->get_answer();
 };
 
 void Controller::set_x(string new_x) { model->set_x(new_x); };
 
-void Controller::update_equation(string new_symbols) {
-  model->update_equation(new_symbols);
+Model::string Controller::reset_x() {
+  model->reset_x();
+  return model->get_x();
 };
 
-void Controller::reset_equation() { model->reset_equation(); };
+void Controller::update_data(string new_symbols) {
+  model->update_data(new_symbols);
+};
 
-// double ExampleController::add(double a) {
-//   model->add(a);
-//   return model->getData();
-// }
+Model::string Controller::del_elem_data() {
+  model->del_elem_data();
+  return model->get_equation();
+};
 
-// double ExampleController::sub(double a) {
-//   model->add(-a);
-//   return model->getData();
-// }
-
-// double ExampleController::mult(double a) {
-//   model->mult(a);
-//   return model->getData();
-// }
-
-// double ExampleController::div(double a) {
-//   model->mult(1.0 / a);
-//   return model->getData();
-// }
-
-// void ExampleController::reset() { model->reset(); }
+Model::string Controller::reset_equation() {
+  model->reset_equation();
+  return model->get_equation();
+};
