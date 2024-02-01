@@ -21,8 +21,17 @@ class View : public QMainWindow {
   void startEventLoop();
   ~View();
 
+ private slots:
+  void on_resetButton_clicked();
+  void on_delXButton_clicked();
+  void on_equalButton_clicked();
+
+  void on_delButton_clicked();
+
  private:
   Ui::View *ui;
   Controller *controller;
+
+  void set_text(Model::string str);
 };
 #endif  // VIEW_H

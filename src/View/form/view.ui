@@ -44,7 +44,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="0">
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="ainButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -56,7 +56,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="4" column="5">
-          <widget class="QPushButton" name="pushButton_31">
+          <widget class="QPushButton" name="minusButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -68,7 +68,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="1" column="5">
-          <widget class="QPushButton" name="pushButton_27">
+          <widget class="QPushButton" name="modButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -80,7 +80,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="QPushButton" name="pushButton_7">
+          <widget class="QPushButton" name="xButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -92,7 +92,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QPushButton" name="pushButton_36">
+          <widget class="QPushButton" name="delXButton">
            <property name="font">
             <font>
              <family>Umpush</family>
@@ -113,7 +113,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="3">
-          <widget class="QPushButton" name="pushButton_19">
+          <widget class="QPushButton" name="Button_5">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -125,7 +125,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QPushButton" name="pushButton_12">
+          <widget class="QPushButton" name="openBrButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -137,7 +137,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="2">
-          <widget class="QPushButton" name="pushButton_13">
+          <widget class="QPushButton" name="Button_7">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -149,7 +149,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QPushButton" name="pushButton_9">
+          <widget class="QPushButton" name="cosButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -161,7 +161,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QPushButton" name="pushButton_8">
+          <widget class="QPushButton" name="sinButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -173,7 +173,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="4" column="3">
-          <widget class="QPushButton" name="pushButton_20">
+          <widget class="QPushButton" name="Button_2">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -185,7 +185,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="logButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -197,7 +197,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="1" column="6">
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="delButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -209,7 +209,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="3">
-          <widget class="QPushButton" name="pushButton_21">
+          <widget class="QPushButton" name="Button_0">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -221,7 +221,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="4" column="4">
-          <widget class="QPushButton" name="pushButton_25">
+          <widget class="QPushButton" name="Button_3">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -233,7 +233,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="4">
-          <widget class="QPushButton" name="pushButton_33">
+          <widget class="QPushButton" name="sqrtButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -245,7 +245,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QPushButton" name="pushButton_11">
+          <widget class="QPushButton" name="lnButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -257,7 +257,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="4" column="2">
-          <widget class="QPushButton" name="pushButton_15">
+          <widget class="QPushButton" name="Button_1">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -269,7 +269,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="0" column="5" colspan="2">
-          <widget class="QPushButton" name="pushButton_28">
+          <widget class="QPushButton" name="resetButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -281,7 +281,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="5">
-          <widget class="QPushButton" name="pushButton_29">
+          <widget class="QPushButton" name="divButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -293,7 +293,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="2">
-          <widget class="QPushButton" name="pushButton_26">
+          <widget class="QPushButton" name="dorButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -305,7 +305,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="atanButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -317,7 +317,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="5">
-          <widget class="QPushButton" name="pushButton_32">
+          <widget class="QPushButton" name="plusButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -329,7 +329,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="6">
-          <widget class="QPushButton" name="pushButton_34">
+          <widget class="QPushButton" name="powButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -341,7 +341,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="4">
-          <widget class="QPushButton" name="pushButton_24">
+          <widget class="QPushButton" name="Button_6">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -353,7 +353,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="acosButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -365,7 +365,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="2">
-          <widget class="QPushButton" name="pushButton_14">
+          <widget class="QPushButton" name="Button_4">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -377,7 +377,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QPushButton" name="pushButton_10">
+          <widget class="QPushButton" name="tanButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -389,7 +389,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="4">
-          <widget class="QPushButton" name="pushButton_23">
+          <widget class="QPushButton" name="Button_9">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -401,7 +401,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="1" column="3">
-          <widget class="QPushButton" name="pushButton_17">
+          <widget class="QPushButton" name="commaButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -413,7 +413,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="0" column="0" colspan="4">
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="lineX">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -432,7 +432,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="5">
-          <widget class="QPushButton" name="pushButton_30">
+          <widget class="QPushButton" name="mulButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -444,7 +444,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="QPushButton" name="pushButton_16">
+          <widget class="QPushButton" name="expButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -456,7 +456,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="1" column="4">
-          <widget class="QPushButton" name="pushButton_22">
+          <widget class="QPushButton" name="closeBrButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -468,7 +468,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QPushButton" name="pushButton_18">
+          <widget class="QPushButton" name="Button_8">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(161, 243, 190);
 font: 25 11pt &quot;Umpush&quot;;
@@ -480,7 +480,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="3" column="6" rowspan="3">
-          <widget class="QPushButton" name="pushButton_35">
+          <widget class="QPushButton" name="equalButton">
            <property name="enabled">
             <bool>true</bool>
            </property>
@@ -513,7 +513,13 @@ color: rgb(0, 0, 0);</string>
      <item row="0" column="0">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QTextEdit" name="textEdit">
+        <widget class="QTextEdit" name="textEquat">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Ignored">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="placeholderText">
           <string>Print equation here</string>
          </property>
@@ -573,14 +579,14 @@ color: rgb(0, 0, 0);</string>
       </spacer>
      </item>
      <item row="1" column="5">
-      <widget class="QLineEdit" name="lineEdit_4">
+      <widget class="QLineEdit" name="lineMinY">
        <property name="placeholderText">
         <string>Min y</string>
        </property>
       </widget>
      </item>
      <item row="1" column="3">
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="lineMaxX">
        <property name="placeholderText">
         <string>Max  x</string>
        </property>
@@ -600,14 +606,14 @@ color: rgb(0, 0, 0);</string>
       </spacer>
      </item>
      <item row="1" column="7">
-      <widget class="QLineEdit" name="lineEdit_5">
+      <widget class="QLineEdit" name="lineMaxY">
        <property name="placeholderText">
         <string>Max  y</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="lineEdit_3">
+      <widget class="QLineEdit" name="lineMinX">
        <property name="placeholderText">
         <string>Min  x</string>
        </property>
@@ -627,7 +633,7 @@ color: rgb(0, 0, 0);</string>
       </spacer>
      </item>
      <item row="0" column="0" colspan="9">
-      <widget class="QCustomPlot" name="widget" native="true">
+      <widget class="QCustomPlot" name="graph" native="true">
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
@@ -635,7 +641,7 @@ color: rgb(0, 0, 0);</string>
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton_37">
+   <widget class="QPushButton" name="graphButton">
     <property name="geometry">
      <rect>
       <x>810</x>
