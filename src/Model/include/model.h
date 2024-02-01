@@ -45,6 +45,8 @@ class Model {
   void update_equation(string new_symbols);
   void reset_equation();
 
+  // TODO: DELETE FROM EQUASION
+
  private:
   string equation;
   deque data;

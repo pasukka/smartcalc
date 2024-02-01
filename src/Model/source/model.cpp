@@ -1,4 +1,4 @@
-#include "calculator.h"
+#include "model.h"
 
 double Model::get_answer() { return answer; };
 

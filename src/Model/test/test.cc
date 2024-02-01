@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "calculator.h"
+#include "model.h"
 
 #define EPSILON 1e-6
 
