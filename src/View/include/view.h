@@ -1,21 +1,28 @@
 #ifndef VIEW_H
 #define VIEW_H
 
+#include <QApplication>
 #include <QMainWindow>
 
+#include "controller.h"
+
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui {
+class View;
+}
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class View : public QMainWindow {
+  Q_OBJECT
 
-public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+ public:
+  View(Controller *c, QWidget *parent = nullptr);
 
-private:
-    Ui::MainWindow *ui;
+  void startEventLoop();
+  ~View();
+
+ private:
+  Ui::View *ui;
+  Controller *controller;
 };
-#endif // VIEW_H
+#endif  // VIEW_H

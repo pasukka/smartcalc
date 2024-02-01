@@ -1,15 +1,13 @@
 #include "view.h"
+
 #include "./ui_view.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
+View::~View() { delete ui; }
+
+View::View(Controller *c, QWidget *parent) : QMainWindow(parent), ui(new Ui::View), controller(c) {
+  ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+void View::startEventLoop() {
+  (*this).show();
 }
-

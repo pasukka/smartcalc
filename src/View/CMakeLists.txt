@@ -9,18 +9,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-
 set(CMAKE_AUTOUIC_SEARCH_PATHS form)
+
+add_compile_options(-Wno-deprecated-declarations)
 
 include_directories(form)
 include_directories(include)
 include_directories(source)
 
+include_directories(${PROJECT_SOURCE_DIR}/Controller)
+
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
-
-# file(GLOB SRC_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/${LIB_NAME}/source/*.cpp)
-
 
 file(GLOB SRC_FILES
         ${PROJECT_SOURCE_DIR}/${LIB_NAME}/form/*.ui
@@ -38,8 +38,10 @@ target_include_directories(${LIB_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/${LIB_NAME}/
 # else()
 #     add_executable(view ${SRC_FILES})
 # endif()
-
+target_link_libraries(${LIB_NAME} PUBLIC Controller)
 target_link_libraries(${LIB_NAME} PUBLIC Qt${QT_VERSION_MAJOR}::Widgets)
+
+
 
 # set_target_properties(${LIB_NAME} PROPERTIES
 #     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
