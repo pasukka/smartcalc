@@ -20,6 +20,7 @@ all: clean test
 clean:
 	@rm -rf buildRelease 2>/dev/null
 	@rm -rf buildDebug 2>/dev/null
+	@rm -rf build-View-Desktop-Debug 2>/dev/null
 	@rm *.tar.gz 2>/dev/null || true
 
 
