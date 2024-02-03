@@ -44,7 +44,7 @@
        <item>
         <layout class="QGridLayout" name="gridLayout">
          <item row="1" column="0">
-          <widget class="QPushButton" name="ainButton">
+          <widget class="QPushButton" name="asinButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
@@ -293,7 +293,7 @@ color: rgb(0, 0, 0);</string>
           </widget>
          </item>
          <item row="5" column="2">
-          <widget class="QPushButton" name="dorButton">
+          <widget class="QPushButton" name="dotButton">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(155, 232, 252);
 font: 25 11pt &quot;Umpush&quot;;
