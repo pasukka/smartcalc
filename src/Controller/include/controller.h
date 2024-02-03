@@ -6,6 +6,7 @@
 class Controller {
  private:
   Model *model;
+  Error error;
 
  public:
   using string = std::string;
@@ -16,10 +17,12 @@ class Controller {
   void set_x(string new_x);
   string reset_x();
   void update_data(string new_symbols);
+  void add_symbol(string symbols_to_add);
   string reset_equation();
   string del_elem_data();
 
-
+  string get_equation();
+  string get_error();
 };
 
 #endif
