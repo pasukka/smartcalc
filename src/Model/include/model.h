@@ -17,7 +17,7 @@
 #define MUL "*"
 #define DIV "/"
 #define POW "^"
-#define MOD "mod"
+#define MOD "%"
 #define COS "cos"
 #define SIN "sin"
 #define TAN "tan"
@@ -29,8 +29,7 @@
 #define LOG "log"
 #define EQUAL "="
 
-enum class Error { OK, ERROR, NaN, OOR, OUT_OF_RANGE };
-
+enum class Error { OK, ERROR, EMPTY, NaN, OOR, RUS };  
 class Model {
  public:
   using string = std::string;
@@ -45,11 +44,12 @@ class Model {
   string get_answer();
   void set_x(string new_x);
   void update_data(string new_symbols);
+  void add_symbol(string symbols_to_add);
   void reset_equation();
   void reset_x();
   string get_equation();
   string get_x();
-  void del_elem_data();
+  Error del_elem_data();
 
  private:
   string equation;
@@ -86,6 +86,7 @@ class Model {
   int is_x(char symbol);
   int is_func_first_letter(char symbol);
   void for_close_bracket(vector *operations, size_t *i);
+  bool understandable(char elem);
 
   void set_sign(double *number, int *sign);
   void set_priority(Lexeme *lexeme);

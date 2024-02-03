@@ -12,8 +12,21 @@ void Model::reset_equation() { equation = ""; };
 
 void Model::reset_x() { x = ""; };
 
-void Model::del_elem_data() {
-  if (!equation.empty()) equation.pop_back();
+bool Model::understandable(char elem) { 
+  return (isascii(elem));
+};
+
+Error Model::del_elem_data() {
+  // std::cout << equation;
+  if (!equation.empty()) {
+    char elem = equation.back();
+    if (!understandable(elem)) {
+      error = Error::RUS;
+    } else {
+      equation.pop_back();
+    }
+  }
+  return error;
 }
 
 void Model::update_data(string new_symbols) {
@@ -24,10 +37,14 @@ void Model::update_data(string new_symbols) {
   error = Error::OK;
 };
 
+void Model::add_symbol(string symbols_to_add) {
+  equation += symbols_to_add;
+};
+
 Error Model::calculate() {
   setlocale(LC_ALL, "C");
   preprocessing();
-  if (equation.size() == 0) error = Error::ERROR;
+  if (equation.size() == 0) error = Error::EMPTY;
   if (error == Error::OK) parser();
   if (error == Error::OK) make_calculations();
   if (error == Error::OK)
@@ -109,7 +126,7 @@ void Model::parse_string(vector *operations, string symbol, int *sign,
         set_sign(&num_x, sign);
         lex.set_valtype(num_x, Type::NUMBER);
       } catch (...) {
-        error = Error::ERROR;  // неправильный x
+        error = Error::ERROR;
       }
     }
   } else if (is_number(symbol[0])) {
