@@ -29,7 +29,7 @@
 #define LOG "log"
 #define EQUAL "="
 
-enum class Error { OK, ERROR, EMPTY, NaN, OOR, RUS };  
+enum class Error { OK, ERROR, EMPTY, NaN, OOR, RUS };
 class Model {
  public:
   using string = std::string;

@@ -3,8 +3,8 @@
 
 #include <QApplication>
 #include <QMainWindow>
-#include <QPushButton>
 #include <QMessageBox>
+#include <QPushButton>
 
 #include "controller.h"
 
@@ -40,7 +40,7 @@ class View : public QMainWindow {
   void on_Button_8_clicked();
   void on_Button_9_clicked();
   void on_xButton_clicked();
-  
+
   void on_openBrButton_clicked();
   void on_closeBrButton_clicked();
   void on_commaButton_clicked();
@@ -65,7 +65,8 @@ class View : public QMainWindow {
   void on_atanButton_clicked();
 
   void onClicked(QPushButton *button);
-  
+
+  void on_graphButton_clicked();
 
  private:
   Ui::View *ui;

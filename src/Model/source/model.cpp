@@ -12,12 +12,9 @@ void Model::reset_equation() { equation = ""; };
 
 void Model::reset_x() { x = ""; };
 
-bool Model::understandable(char elem) { 
-  return (isascii(elem));
-};
+bool Model::understandable(char elem) { return (isascii(elem)); };
 
 Error Model::del_elem_data() {
-  // std::cout << equation;
   if (!equation.empty()) {
     char elem = equation.back();
     if (!understandable(elem)) {
@@ -37,11 +34,11 @@ void Model::update_data(string new_symbols) {
   error = Error::OK;
 };
 
-void Model::add_symbol(string symbols_to_add) {
-  equation += symbols_to_add;
-};
+void Model::add_symbol(string symbols_to_add) { equation += symbols_to_add; };
 
 Error Model::calculate() {
+  answer = "";
+  data.clear();
   setlocale(LC_ALL, "C");
   preprocessing();
   if (equation.size() == 0) error = Error::EMPTY;

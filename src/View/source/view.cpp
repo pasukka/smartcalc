@@ -11,15 +11,13 @@ View::View(Controller *c, QWidget *parent)
 
 void View::startEventLoop() { (*this).show(); }
 
-void View::make_error(QString text) {
-  QMessageBox::about(this, "Error", text);
-}
+void View::make_error(QString text) { QMessageBox::about(this, "Error", text); }
 
-void View::set_text(QString str) {
-  ui->textEquat->setPlainText(str);
-}
+void View::set_text(QString str) { ui->textEquat->setPlainText(str); }
 
-void View::on_resetButton_clicked() { set_text(make_QString(controller->reset_equation())); }
+void View::on_resetButton_clicked() {
+  set_text(make_QString(controller->reset_equation()));
+}
 
 void View::on_delXButton_clicked() {
   QString qstr = make_QString(controller->reset_x());
@@ -92,4 +90,57 @@ void View::onClicked(QPushButton *button) {
   controller->update_data(ui->textEquat->toPlainText().toStdString());
   controller->add_symbol(button->text().toStdString());
   set_text(make_QString(controller->get_equation()));
+}
+
+void View::on_graphButton_clicked() {
+  controller->update_data(ui->textEquat->toPlainText().toStdString());
+
+  double min_x = -1;
+  double max_x = 1;
+  double min_y = -1;
+  double max_y = 1;
+  double step_x = 0.1;
+
+  if (ui->lineMinX->text() != "") min_x = ui->lineMinX->text().toDouble();
+  if (ui->lineMaxX->text() != "") max_x = ui->lineMaxX->text().toDouble();
+
+  if (ui->lineMinY->text() != "") min_y = ui->lineMinY->text().toDouble();
+  if (ui->lineMaxY->text() != "") max_y = ui->lineMaxY->text().toDouble();
+
+  int N = (max_x - min_x) / step_x + 2;
+
+  QVector<double> x(N), y(N);
+  int i = 0;
+  for (double X = min_x; X <= max_x; X += step_x) {
+    controller->reset_x();
+    controller->set_x(std::to_string(X));
+    x[i] = X;
+
+    Controller::string str = controller->calculate();
+    if (str != "") {
+      y[i] = stod(controller->calculate());
+    }
+
+    QString error = make_QString(controller->get_error());
+    if (error != "") {
+      make_error(error);
+      break;
+    }
+    ++i;
+  }
+  
+  ui->graph->clearGraphs();
+  ui->graph->addGraph();
+  ui->graph->graph(0)->setData(x, y);
+  ui->graph->xAxis->setRange(min_x, max_x);
+
+  // min_y = y[0];
+  // max_y = y[0];
+
+  for (int i = 1; i < N; i++) {
+    if (y[i] < min_y) min_y = y[i];
+    if (y[i] > max_y) max_y = y[i];
+  }
+  ui->graph->yAxis->setRange(min_y, max_y);
+  ui->graph->replot();
 }

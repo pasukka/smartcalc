@@ -2,7 +2,7 @@
 
 Model::string Controller::calculate() {
   error = Error::OK;
-  error = model->calculate();  
+  error = model->calculate();
   string answer = model->get_answer();
   return answer;
 };
@@ -52,4 +52,3 @@ Model::string Controller::reset_equation() {
   model->reset_equation();
   return model->get_equation();
 };
-
