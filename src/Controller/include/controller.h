@@ -11,7 +11,7 @@ class Controller {
  public:
   using string = std::string;
 
-  Controller(Model *m) : model(m){};
+  Controller(Model *m) : model(m), error(Error::OK) {};
 
   string calculate();
   void set_x(string new_x);
