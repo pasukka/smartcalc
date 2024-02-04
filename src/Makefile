@@ -45,6 +45,10 @@ dist: buildRelease
 	@cmake --build buildRelease --target package_source
 	@cp buildRelease/*.tar.gz .
 
+dvi: buildRelease
+	@cmake --build buildRelease --target generate_docs
+	${BROWSER_OPENER} buildRelease/html/index.html
+
 leaks:
 	$(LEAK_CMD)
 
