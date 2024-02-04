@@ -19,6 +19,21 @@ add_subdirectory(Model)
 add_subdirectory(dependencies)
 include_directories(View)
 
+# ---- DOCUMENTION GENERATION ----
+find_package(Doxygen)
+if (Doxygen_FOUND)
+    set(DOXYGEN_OPTIMIZE_OUTPUT_FOR_C YES)
+    set(DOXYGEN_EXTRACT_STATIC YES)
+    doxygen_add_docs(generate_docs)
+endif()
+
+# ---- CPACK FOR DIST ----
+SET(CPACK_SOURCE_GENERATOR "TGZ")
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}")
+SET(CPACK_SOURCE_IGNORE_FILES 
+    "/build/;/buildDebug/;/buildRelease/;${CPACK_SOURCE_IGNORE_FILES}")
+include(CPack)
+
 add_executable(s21_SmartCalculator main.cpp)
 
 # ---- TEST COMPILATION ----
