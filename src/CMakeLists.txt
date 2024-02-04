@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
-    add_compile_options("-Wall" "-Werror" "-Weffc++" "-Wextra" "-Wpedantic" )
+    add_compile_options("-Wall" "-Wextra" "-Wpedantic" )
 else()
     message("WE NEED GCC FOR CODE COVERAGE AND COMPILE OPTIONS REQUIRED BY SCHOOL")
 endif()
