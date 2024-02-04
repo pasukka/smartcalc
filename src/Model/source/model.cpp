@@ -12,12 +12,10 @@ void Model::reset_equation() { equation = ""; };
 
 void Model::reset_x() { x = ""; };
 
-bool Model::understandable(char elem) { return (isascii(elem)); };
-
 Error Model::del_elem_data() {
   if (!equation.empty()) {
     char elem = equation.back();
-    if (!understandable(elem)) {
+    if (!isascii(elem)) {
       error = Error::RUS;
     } else {
       equation.pop_back();
@@ -107,6 +105,8 @@ void Model::parse_string(vector *operations, string symbol, int *sign,
     lex.set_valtype(symbol, Type::DELIM);
   } else if (is_operator(symbol[0])) {
     make_operator(&lex, symbol, sign, *i);
+  } else if (is_function(symbol)) {
+    lex.set_valtype(symbol, Type::FUNCTION);
   } else if (is_letter(symbol[0]) && is_letter(equation[*i + 1])) {
     string new_str = make_string(equation, i);
     if (is_function(new_str)) {
@@ -133,7 +133,7 @@ void Model::parse_string(vector *operations, string symbol, int *sign,
   } else if (symbol[0] != ' ' && symbol[0] != 0) {
     error = Error::ERROR;
   }
-  if (error == Error::OK) {
+  if (error == Error::OK && symbol[0] != ' ' && symbol[0] != 0) {
     if (lex.get_type() != Type::NONE) {
       dijkstra_algorithm(operations, &lex);
     }
@@ -192,10 +192,9 @@ void Model::set_priority(Lexeme *lexeme) {
 };
 
 void Model::move_from_stack(vector *operations, size_t *i) {
-  while (operations->size() > 0 && !is_open_bracket(std::any_cast<string>(
-                                       (*operations)[*i].get_value())[0])) {
-    if (*i == 0 && !is_open_bracket(std::any_cast<string>(
-                       (*operations)[*i].get_value())[0])) {
+  while (operations->size() > 0 &&
+         (*operations)[*i].get_type() != Type::OPEN_BR) {
+    if (*i == 0 && (*operations)[*i].get_type() != Type::OPEN_BR) {
       error = Error::ERROR;
       break;
     }
@@ -307,9 +306,7 @@ void Model::dijkstra_algorithm(vector *operations, Lexeme *lexeme) {
       operations->push_back(*lexeme);
       break;
     case Type::DELIM:
-      if (operations->size() > 0) {
-        move_from_stack(operations, &i);
-      } else {
+      if (operations->size() == 0) {
         error = Error::ERROR;
       }
       break;
@@ -324,14 +321,13 @@ void Model::dijkstra_algorithm(vector *operations, Lexeme *lexeme) {
       }
       operations->push_back(*lexeme);
       break;
-    case Type::CLOSE_BR:
+    default:  // Type::CLOSE_BR
       if (operations->size() > 0) {
+        printf("\n !! %ld \n", operations->size());
         for_close_bracket(operations, &i);
       } else {
         error = Error::ERROR;
       }
-      break;
-    default:
       break;
   }
 };
@@ -341,16 +337,13 @@ void Model::make_calculations() {
     Lexeme lexeme = data[i];
     std::optional opt_str = get_v_opt<string>(lexeme.get_value());
     if (opt_str.has_value()) {
-      if (lexeme.get_type() == Type::FUNCTION &&
-          std::any_cast<string>(lexeme.get_value()) != MOD) {
+      std::string val = std::any_cast<string>(lexeme.get_value());
+      if (lexeme.get_type() == Type::FUNCTION && val != MOD) {
         if (data.size() < 2 || i < 1) error = Error::ERROR;
-        if (error == Error::OK)
-          apply_function(std::any_cast<string>(lexeme.get_value()), &i);
-      } else if (lexeme.get_type() == Type::OPERATOR ||
-                 std::any_cast<string>(lexeme.get_value()) == MOD) {
+        if (error == Error::OK) apply_function(val, &i);
+      } else if (lexeme.get_type() == Type::OPERATOR || val == MOD) {
         if (data.size() < 3) error = Error::ERROR;
-        if (error == Error::OK)
-          apply_operation(std::any_cast<string>(lexeme.get_value()), &i);
+        if (error == Error::OK) apply_operation(val, &i);
       }
     }
   }

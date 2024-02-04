@@ -184,6 +184,16 @@ TEST(ParserTest, Error_18) {
   EXPECT_EQ(error, Error::NaN);
 }
 
+TEST(ParserTest, Error_19) {
+  std::string str = "10)";
+  std::string x = "";
+  Model m;
+  m.set_x(x);
+  m.update_data(str);
+  Error error = m.calculate();
+  EXPECT_EQ(error, Error::ERROR);
+}
+
 TEST(ParserTest, Test_1) {
   std::string str = "sin(8)";
   std::string x = "";
@@ -221,8 +231,8 @@ TEST(ParserTest, Test_4) {
   std::string str = "sin(x)";
   std::string x = "8";
   Model m;
-  m.set_x(x);
   m.update_data(str);
+  m.set_x(x);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), 0.989358, EPSILON);
@@ -232,8 +242,8 @@ TEST(ParserTest, Test_5) {
   std::string str = "cos(3*x)";
   std::string x = "2";
   Model m;
-  m.set_x(x);
   m.update_data(str);
+  m.set_x(x);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), 0.960170, EPSILON);
@@ -243,8 +253,8 @@ TEST(ParserTest, Test_6) {
   std::string str = "tan(x)";
   std::string x = "2";
   Model m;
-  m.set_x(x);
   m.update_data(str);
+  m.set_x(x);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), -2.185040, EPSILON);
@@ -254,8 +264,8 @@ TEST(ParserTest, Test_7) {
   std::string str = "atan(8/x)";
   std::string x = "4";
   Model m;
-  m.set_x(x);
   m.update_data(str);
+  m.set_x(x);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), 1.107149, EPSILON);
@@ -355,10 +365,8 @@ TEST(ParserTest, Test_15) {
 }
 
 TEST(ParserTest, Test_16) {
-  std::string str = "2mod3";
-  std::string x = "4";
+  std::string str = "2%3";
   Model m;
-  m.set_x(x);
   m.update_data(str);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
@@ -435,8 +443,8 @@ TEST(ParserTest, Test_23) {
   std::string str = "5+4*cos(5x)";
   std::string x = "1.0";
   Model m;
-  m.set_x(x);
   m.update_data(str);
+  m.set_x(x);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), 6.134649, EPSILON);
@@ -523,8 +531,8 @@ TEST(ParserTest, Test_31) {
   std::string str = "-sin(x)";
   std::string x = "2.980000";
   Model m;
-  m.set_x(x);
   m.update_data(str);
+  m.set_x(x);
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), -0.16089, EPSILON);
@@ -539,6 +547,70 @@ TEST(ParserTest, Test_32) {
   Error error = m.calculate();
   EXPECT_EQ(error, Error::OK);
   EXPECT_NEAR(stod(m.get_answer()), -0.16089, EPSILON);
+}
+
+TEST(ParserTest, Get_x) {
+  std::string x = "2.980000";
+  Model m;
+  m.set_x(x);
+  EXPECT_EQ(x, m.get_x());
+}
+
+TEST(ParserTest, Get_equation) {
+  std::string str = "-sin(2.980000)";
+  Model m;
+  m.update_data(str);
+  EXPECT_EQ(str, m.get_equation());
+}
+
+TEST(ParserTest, Reset_equation) {
+  std::string str = "-sin(2.980000)";
+  Model m;
+  m.update_data(str);
+  m.reset_equation();
+  EXPECT_EQ("", m.get_equation());
+}
+
+TEST(ParserTest, Reset_x) {
+  std::string x = "2.980000";
+  Model m;
+  m.set_x(x);
+  m.reset_x();
+  EXPECT_EQ("", m.get_x());
+}
+
+TEST(ParserTest, Del_elem) {
+  std::string str = "sin(2)";
+  Model m;
+  m.update_data(str);
+  m.del_elem_data();
+  str = "sin(2";
+  EXPECT_EQ(str, m.get_equation());
+}
+
+TEST(ParserTest, Rus_letters) {
+  std::string str = "фвьа";
+  Model m;
+  m.update_data(str);
+  Error err = m.del_elem_data();
+  EXPECT_EQ(Error::RUS, err);
+}
+
+TEST(ParserTest, Add_elem) {
+  std::string str = "sin(2";
+  Model m;
+  m.update_data(str);
+  m.add_symbol(")");
+  EXPECT_EQ(str + ")", m.get_equation());
+}
+
+TEST(ParserTest, Wrong_x) {
+  std::string str = "sin(x)";
+  Model m;
+  m.update_data(str);
+  m.set_x("dfgj");
+  Error error = m.calculate();
+  EXPECT_EQ(error, Error::ERROR);
 }
 
 int main(int argc, char** argv) {

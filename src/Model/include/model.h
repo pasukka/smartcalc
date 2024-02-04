@@ -17,6 +17,7 @@
 #define MUL "*"
 #define DIV "/"
 #define POW "^"
+#define POW "^"
 #define MOD "%"
 #define COS "cos"
 #define SIN "sin"
