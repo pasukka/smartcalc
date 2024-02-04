@@ -32,7 +32,6 @@ uninstall: clean
 open: install
 	${APP_OPEN}
 
-
 test: buildRelease 
 	@cmake --build buildRelease --target test
 	@echo "\033[0;32m-----------TESTS------------:\033[0m"
@@ -48,9 +47,6 @@ dist: buildRelease
 
 leaks:
 	$(LEAK_CMD)
-
-cppcheck:
-	cppcheck --enable=all --language=c++ --suppress=missingIncludeSystem ${SRC_DIR}/*.${SRC_EXT} ${SRC_DIR}/*.h
 
 gcov_report: buildDebug
 	@cmake --build buildDebug --target test_coverage
