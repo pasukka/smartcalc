@@ -47,7 +47,7 @@ Error Model::calculate() {
   return error;
 };
 
-int Model::is_func_first_letter(char symbol) {
+bool Model::is_func_first_letter(char symbol) {
   return (symbol == COS[0] || symbol == SIN[0] || symbol == TAN[0] ||
           symbol == ACOS[0] || symbol == ASIN[0] || symbol == ATAN[0] ||
           symbol == SQRT[0]);
@@ -140,24 +140,24 @@ void Model::parse_string(vector *operations, string symbol, int *sign,
   }
 };
 
-int Model::is_x(char symbol) { return (symbol == 'x'); };
+bool Model::is_x(char symbol) { return (symbol == 'x'); };
 
-int Model::is_number(char symbol) { return (symbol >= 48 && symbol <= 57); };
+bool Model::is_number(char symbol) { return (symbol >= 48 && symbol <= 57); };
 
-int Model::is_open_bracket(char symbol) { return (symbol == '('); };
+bool Model::is_open_bracket(char symbol) { return (symbol == '('); };
 
-int Model::is_delimiter(char symbol) { return (symbol == ','); };
+bool Model::is_delimiter(char symbol) { return (symbol == ','); };
 
-int Model::is_closing_bracket(char symbol) { return (symbol == ')'); };
+bool Model::is_closing_bracket(char symbol) { return (symbol == ')'); };
 
-int Model::is_function(string equation) {
+bool Model::is_function(string equation) {
   return (equation == MOD || equation == COS || equation == SIN ||
           equation == TAN || equation == ACOS || equation == ASIN ||
           equation == ATAN || equation == SQRT || equation == LN ||
           equation == LOG);
 };
 
-int Model::is_operator(char symbol) {
+bool Model::is_operator(char symbol) {
   int output = 0;
   if (symbol == PLUS[0] || symbol == MINUS[0] || symbol == MUL[0] ||
       symbol == DIV[0] || symbol == POW[0])
@@ -165,7 +165,7 @@ int Model::is_operator(char symbol) {
   return output;
 };
 
-int Model::is_letter(char symbol) {
+bool Model::is_letter(char symbol) {
   return ((symbol >= 65 && symbol <= 90) || (symbol >= 97 && symbol <= 122));
 };
 
@@ -217,44 +217,44 @@ void Model::for_close_bracket(vector *operations, size_t *i) {
     move_lexeme_to_stack(operations, *i - 1);
 };
 
-Model::string Model::make_string(string stack_in, size_t *index_in) {
+Model::string Model::make_string(string str, size_t *index) {
   string equation;
-  while (is_letter(stack_in[*index_in])) {
-    equation += stack_in[*index_in];
-    ++(*index_in);
+  while (is_letter(str[*index])) {
+    equation += str[*index];
+    ++(*index);
   }
-  --(*index_in);
+  --(*index);
   return equation;
 };
 
-double Model::parse_number_from_stack(size_t *index_in) {
+double Model::parse_number_from_stack(size_t *index) {
   double number = 0.0;
   int shift = 0;
-  char symbol = equation[*index_in];
-  make_number(&number, index_in, &symbol, &shift);
+  char symbol = equation[*index];
+  make_number(&number, index, &symbol, &shift);
   if (symbol == '.') {
-    make_number(&number, index_in, &symbol, &shift);
-    (*index_in)++;
-    make_number(&number, index_in, &symbol, &shift);
+    make_number(&number, index, &symbol, &shift);
+    (*index)++;
+    make_number(&number, index, &symbol, &shift);
   }
   if (symbol == 'e' || symbol == 'E') {
     double sh = 0;
     int sign = 1;
-    (*index_in)++;
-    if (equation[*index_in] == MINUS[0]) {
+    (*index)++;
+    if (equation[*index] == MINUS[0]) {
       sign = -1;
-    } else if (equation[*index_in] != PLUS[0]) {
+    } else if (equation[*index] != PLUS[0]) {
       error = Error::ERROR;
     }
     if (error == Error::OK) {
-      (*index_in)++;
-      sh = make_number(&number, index_in, &symbol, &shift);
+      (*index)++;
+      sh = make_number(&number, index, &symbol, &shift);
     }
     shift += sh * sign;
   }
   for (; shift > 0; shift--) number *= 10.0;
   for (; shift < 0; shift++) number *= 0.1;
-  (*index_in)--;
+  (*index)--;
   return number;
 };
 
@@ -273,21 +273,20 @@ void Model::make_operator(Lexeme *lex, string symbol, int *sign, size_t i) {
   }
 };
 
-double Model::make_number(double *number, size_t *index_in, char *symbol,
+double Model::make_number(double *number, size_t *index, char *symbol,
                           int *shift) {
   int need_shift = 0;
   int need_shift_e = 0;
   double out = 0.0;
   if (*symbol == '.') need_shift = 1;
   if (*symbol == 'e' || *symbol == 'E') need_shift_e = 1;
-  while ((*symbol = equation[*index_in]) != '\0' &&
-         is_number(equation[*index_in])) {
+  while ((*symbol = equation[*index]) != '\0' && is_number(equation[*index])) {
     if (need_shift_e != 1)
       *number = *number * 10.0 + (*symbol - '0');
     else
       out = out * 10 + (*symbol - '0');
     if (need_shift == 1) (*shift)--;
-    (*index_in)++;
+    (*index)++;
   }
   return out;
 };
