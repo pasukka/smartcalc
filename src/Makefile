@@ -10,7 +10,7 @@ endif
 GNU_COMPILER = -D CMAKE_CXX_COMPILER=g++ -D CMAKE_C_COMPILER=gcc
 SRC_DIR = ./lib
 SRC_EXT = cc
-TEST_PATH = buildRelease/test
+TEST_PATH = buildRelease/Model/test
 APP_OPEN = ./buildRelease/s21_SmartCalculator
 
 .PHONY: all clean test
