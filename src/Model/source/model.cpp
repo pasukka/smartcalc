@@ -323,7 +323,6 @@ void Model::dijkstra_algorithm(vector *operations, Lexeme *lexeme) {
       break;
     default:  // Type::CLOSE_BR
       if (operations->size() > 0) {
-        printf("\n !! %ld \n", operations->size());
         for_close_bracket(operations, &i);
       } else {
         error = Error::ERROR;
