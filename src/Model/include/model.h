@@ -86,8 +86,8 @@ class Model {
    *
    * @param new_x New x
    */
-
   void set_x(string new_x);
+
   /**
    * @brief The functions updates equation and sets empty x and answer
    *

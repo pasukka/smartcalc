@@ -50,7 +50,7 @@ class Lexeme {
    * @return Lexeme The lexeme
    */
   Lexeme(value_type value, Type type) : value(value), priority(0), type(type){};
-  
+
   /**
    * @brief The functions handles initializing lexeme from another lexeme
    *
@@ -69,7 +69,7 @@ class Lexeme {
 
   /**
    * @brief The functions handles destroying lexeme
-   * 
+   *
    */
   ~Lexeme(){};
 
@@ -96,13 +96,13 @@ class Lexeme {
 
   /**
    * @brief The functions sets type of lexeme
-   * 
+   *
    */
   void set_type(Type new_type);
 
   /**
    * @brief The functions sets value of lexeme
-   * 
+   *
    */
   void set_value(value_type new_value);
 
@@ -114,13 +114,13 @@ class Lexeme {
 
   /**
    * @brief The functions sets value and type of lexeme
-   * 
+   *
    */
   void set_valtype(value_type new_value, Type new_type);
 
   /**
    * @brief The functions swaps two lexemes
-   * 
+   *
    */
   void swap(Lexeme& other) noexcept;
 
