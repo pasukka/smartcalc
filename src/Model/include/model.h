@@ -45,6 +45,7 @@
  * @brief The enum class contains different types of errors
  */
 enum class Error { OK, ERROR, EMPTY, NaN, OOR, RUS };
+
 /**
  * @brief The model class
  */
@@ -62,7 +63,7 @@ class Model {
   Model() : equation(""), data(), x(""), answer(""), error(Error::OK){};
 
   /**
-   * @brief The functions handles destoying model
+   * @brief The functions handles destroying model
    */
   ~Model(){};
 
