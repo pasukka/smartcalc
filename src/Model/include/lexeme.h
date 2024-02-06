@@ -19,32 +19,21 @@ class Lexeme {
   Lexeme(const Lexeme& other)
       : value(other.value), priority(other.priority), type(other.type) {}
 
-  Lexeme& operator=(const Lexeme& other) {
-    Lexeme copy(other);
-    swap(copy);
-    return *this;
-  };
+  Lexeme& operator=(const Lexeme& other);
 
   ~Lexeme(){};
 
-  Type get_type() { return type; };
-  value_type get_value() { return value; };
-  int get_priority() { return priority; };
+  Type get_type();
+  value_type get_value();
+  int get_priority();
 
-  void set_type(Type new_type) { type = new_type; };
-  void set_value(value_type new_value) { value = new_value; };
-  void set_priority(int new_priority) { priority = new_priority; };
+  void set_type(Type new_type);
+  void set_value(value_type new_value);
+  void set_priority(int new_priority);
 
-  void set_valtype(value_type new_value, Type new_type) {
-    value = new_value;
-    type = new_type;
-  };
+  void set_valtype(value_type new_value, Type new_type);
 
-  void swap(Lexeme& other) noexcept {
-    std::swap(value, other.value);
-    std::swap(priority, other.priority);
-    std::swap(type, other.type);
-  };
+  void swap(Lexeme& other) noexcept;
 
  private:
   value_type value;
