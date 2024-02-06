@@ -29,9 +29,16 @@ class Controller {
   /**
    * @brief The functions handles initializing controller
    *
+   * @param m The model
    * @return Controller The controller
    */
   Controller(Model *m) : model(m), error(Error::OK){};
+
+  /**
+   * @brief The functions handles destroying controller
+   *
+   */
+  ~Controller() {};
 
   /**
    * @brief The functions calculates equation
