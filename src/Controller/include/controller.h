@@ -38,7 +38,7 @@ class Controller {
    * @brief The functions handles destroying controller
    *
    */
-  ~Controller() {};
+  ~Controller(){};
 
   /**
    * @brief The functions calculates equation
@@ -56,7 +56,7 @@ class Controller {
 
   /**
    * @brief The functions resets x
-   * 
+   *
    * @return string The new x
    */
   string reset_x();
@@ -65,7 +65,7 @@ class Controller {
    * @brief The functions updates equation and sets empty x and answer
    *
    * @param new_symbols New equation
-   */  
+   */
   void update_data(string new_symbols);
 
   /**
@@ -77,7 +77,7 @@ class Controller {
 
   /**
    * @brief The functions resets equation
-   * 
+   *
    * @return string The new equation
    */
   string reset_equation();
