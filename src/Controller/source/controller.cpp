@@ -18,7 +18,6 @@ Model::string Controller::get_error() {
   } else if (error == Error::RUS) {
     str_error = "Unknown characters.";
   }
-  // + OOR для графика, когда не подходит
   return str_error;
 };
 
@@ -35,9 +34,6 @@ void Controller::update_data(string new_symbols) {
 
 void Controller::add_symbol(string symbols_to_add) {
   string symbols = symbols_to_add;
-  if (symbols_to_add == "√") {
-    symbols = "sqrt";
-  }
   model->add_symbol(symbols);
 };
 

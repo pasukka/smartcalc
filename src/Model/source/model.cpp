@@ -55,6 +55,11 @@ bool Model::is_func_first_letter(char symbol) {
 
 void Model::preprocessing() {
   string str2 = "";
+  string sqrt = "√";
+  auto f = equation.find(sqrt);
+  if (f != std::string::npos) {
+    equation.replace(f, sqrt.length(), "sqrt");
+  }
   for (size_t i = 0; i < equation.size(); i++) {
     char symbol = equation[i];
     if (i > 0 && (is_func_first_letter(symbol) || is_x(symbol)) &&
