@@ -194,6 +194,14 @@ TEST(ParserTest, Error_19) {
   EXPECT_EQ(error, Error::ERROR);
 }
 
+TEST(ParserTest, Error_20) {
+  std::string str = "sin))";
+  Model m;
+  m.update_data(str);
+  Error error = m.calculate();
+  EXPECT_EQ(error, Error::ERROR);
+}
+
 TEST(ParserTest, Test_1) {
   std::string str = "sin(8)";
   std::string x = "";
@@ -602,6 +610,15 @@ TEST(ParserTest, Add_elem) {
   m.update_data(str);
   m.add_symbol(")");
   EXPECT_EQ(str + ")", m.get_equation());
+}
+
+TEST(ParserTest, Sqrt) {
+  std::string str = "√4";
+  Model m;
+  m.update_data(str);
+  Error error = m.calculate();
+  EXPECT_EQ(error, Error::OK);
+  EXPECT_NEAR(stod(m.get_answer()), 2, EPSILON);
 }
 
 TEST(ParserTest, Wrong_x) {
