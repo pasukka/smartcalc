@@ -280,6 +280,10 @@ class View : public QMainWindow {
  private:
   Ui::View *ui;
   Controller *controller;
+  double min_x;
+  double max_x;
+  double min_y;
+  double max_y;
 
   /**
    * @brief The functions handles clicking atan
@@ -300,5 +304,18 @@ class View : public QMainWindow {
    * @param str The equation
    */
   void set_text(QString str);
+
+  /**
+   * @brief The functions gets domain and codomain
+   *
+   * @return bool True if no errors occured 
+   */
+  bool get_domains();
+
+  /**
+   * @brief The functions initializes domain and codomain
+   *
+   */
+  void init_domains();
 };
 #endif  // VIEW_H
