@@ -308,7 +308,7 @@ class View : public QMainWindow {
   /**
    * @brief The functions gets domain and codomain
    *
-   * @return bool True if no errors occured 
+   * @return bool True if no errors occured
    */
   bool get_domains();
 
