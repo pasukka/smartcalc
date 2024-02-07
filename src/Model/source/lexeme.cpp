@@ -10,7 +10,6 @@ Type Lexeme::get_type() { return type; };
 Lexeme::value_type Lexeme::get_value() { return value; };
 int Lexeme::get_priority() { return priority; };
 
-void Lexeme::set_type(Type new_type) { type = new_type; };
 void Lexeme::set_value(value_type new_value) { value = new_value; };
 void Lexeme::set_priority(int new_priority) { priority = new_priority; };
 

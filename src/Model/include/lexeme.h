@@ -95,12 +95,6 @@ class Lexeme {
   int get_priority();
 
   /**
-   * @brief The functions sets type of lexeme
-   *
-   */
-  void set_type(Type new_type);
-
-  /**
    * @brief The functions sets value of lexeme
    *
    */
